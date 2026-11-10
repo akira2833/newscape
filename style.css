@@ -500,9 +500,9 @@ body.is-loading {
   background: linear-gradient(
     to bottom,
     transparent 0%,
-    rgba(255, 255, 255, 0.22) 8%,
-    rgba(255, 255, 255, 0.28) 50%,
-    rgba(255, 255, 255, 0.22) 92%,
+    rgba(17, 17, 17, 0.08) 8%,
+    rgba(17, 17, 17, 0.16) 50%,
+    rgba(17, 17, 17, 0.08) 92%,
     transparent 100%
   );
   pointer-events: none;
@@ -518,19 +518,19 @@ body.is-loading {
   will-change: transform;
 }
 
-/* 각 챕터 단어가 위치하는 세로 슬롯 */
+/* 각 챕터 단어가 위치하는 세로 슬롯 (글자 겹침을 방지하도록 넉넉한 세로 높이 할당) */
 .typo-item {
   position: relative;
-  height: clamp(500px, 72vh, 800px);
-  width: clamp(100px, 14vw, 180px);
+  height: clamp(620px, 86vh, 920px);
+  width: clamp(80px, 9vw, 130px);
   flex-shrink: 0;
-  opacity: 0.28;
+  opacity: 0.25;
   transition: opacity 0.6s var(--ease-out);
   will-change: opacity;
 }
 
 .typo-item.is-active {
-  opacity: 0.92;
+  opacity: 0.88;
 }
 
 .typo-item-inner {
@@ -540,7 +540,7 @@ body.is-loading {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 12px;
+  gap: 8px;
   transform: translate(-50%, -50%) rotate(-90deg);
   transform-origin: center center;
   white-space: nowrap;
@@ -549,12 +549,12 @@ body.is-loading {
 
 .typo-item-text {
   font-family: var(--font-display-en);
-  font-size: clamp(4.6rem, 11vw, 13rem);
+  font-size: clamp(2.4rem, 4.4vw, 4.8rem);
   font-weight: 700;
-  letter-spacing: -0.009em;
-  line-height: 0.82;
+  letter-spacing: 0.04em;
+  line-height: 0.9;
   text-transform: uppercase;
-  color: rgba(17, 17, 17, 0.12);
+  color: rgba(17, 17, 17, 0.14);
   -webkit-text-stroke: 0 !important;
   white-space: nowrap;
   transition: color 0.5s var(--ease-out);
@@ -562,19 +562,19 @@ body.is-loading {
 }
 
 .typo-item.is-active .typo-item-text {
-  color: rgba(17, 17, 17, 0.35);
+  color: rgba(17, 17, 17, 0.40);
   text-shadow: none !important;
 }
 
 .typo-item-sub {
   font-family: var(--font-serif-en);
-  font-size: clamp(9px, 0.9vw, 13px);
+  font-size: clamp(8px, 0.75vw, 11px);
   font-weight: 400;
-  letter-spacing: 0.26em;
+  letter-spacing: 0.22em;
   text-transform: uppercase;
-  color: rgba(17, 17, 17, 0.25);
+  color: rgba(17, 17, 17, 0.28);
   white-space: nowrap;
-  margin-top: 4px;
+  margin-top: 3px;
   text-shadow: none !important;
 }
 

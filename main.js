@@ -263,9 +263,9 @@ function handleScroll() {
     trackerFill.style.height = `${(scrollRatio * 100).toFixed(1)}%`;
   }
 
-  // 2. Continuous Vertical Typography Stream (캐시된 좌표로 즉각 보간)
+  // 2. Continuous Vertical Typography Stream (상단 잘림 및 겹침 방지 여백 보정)
   if (typoStreamList && cachedSecMids.length > 0 && cachedItemCenters.length > 0) {
-    const focalCenterY = viewportHeight * 0.48;
+    const focalCenterY = viewportHeight * 0.54;
 
     // 각 본문 섹션의 현재 뷰포트 내 중심 Y 좌표
     const secMids = cachedSecMids.map(s => s.midDoc - scrollY);
