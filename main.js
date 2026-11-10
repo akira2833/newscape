@@ -1031,153 +1031,287 @@ function initQuillBirdCompanion() {
     };
   }
 
-  // 1. 화면 좌우측에 크게 자리잡는 대형 철새 2마리 + 2. 상공과 원거리를 유영하는 작은 철새 무리
+  // 1. 화면 좌우측 컴패니언 대형 철새 2마리 + 2. V자 편대 및 고공·원거리 유영 철새 떼 (총 14마리 서정적 군무)
   const FLOCK = [
-    // [1. 좌측 대형 철새]
+    // [Layer 1: 좌측 대형 철새 - 컴패니언]
     {
       id: 0,
       type: 'majestic',
       side: 'left',
-      scale: isMobile ? 1.15 : 1.68,   // 크게 배치 (날개폭 3D 확대)
+      scale: isMobile ? 1.05 : 1.68,
       zBase: 0.3,
-      anchorXRatio: isMobile ? 0.12 : 0.16,  // 화면 좌측 약 16% 지점
-      anchorYRatio: 0.44,
-      wanderRangeX: isMobile ? 30 : 55,
-      wanderRangeY: 45,
+      anchorXRatio: isMobile ? 0.10 : 0.16,
+      anchorYRatio: isMobile ? 0.38 : 0.44,
+      wanderRangeX: isMobile ? 24 : 55,
+      wanderRangeY: isMobile ? 30 : 45,
       springSpeed: 0.035,
       wanderSeed: 1.2,
       flapSpeed: 0.92,
       climbSpeed: 52,
       awayZDrift: 3.8,
-      screenX: window.innerWidth * (isMobile ? 0.12 : 0.16),
-      screenY: window.innerHeight * 0.44,
+      screenX: window.innerWidth * (isMobile ? 0.10 : 0.16),
+      screenY: window.innerHeight * (isMobile ? 0.38 : 0.44),
       currentZ: 0.3,
       awayFactor: 0.0,
       flapPhase: 0.0,
-      baseYaw: 0.28   // 중앙 스토리를 바라보는 우아한 안쪽 각도
+      baseYaw: 0.28
     },
-    // [2. 우측 대형 철새]
+    // [Layer 1: 우측 대형 철새 - 컴패니언]
     {
       id: 1,
       type: 'majestic',
       side: 'right',
-      scale: isMobile ? 1.10 : 1.62,   // 크게 배치 (날개폭 3D 확대)
+      scale: isMobile ? 1.00 : 1.62,
       zBase: 0.0,
-      anchorXRatio: isMobile ? 0.88 : 0.84,  // 화면 우측 약 84% 지점
-      anchorYRatio: 0.48,
-      wanderRangeX: isMobile ? 30 : 55,
-      wanderRangeY: 45,
+      anchorXRatio: isMobile ? 0.90 : 0.84,
+      anchorYRatio: isMobile ? 0.42 : 0.48,
+      wanderRangeX: isMobile ? 24 : 55,
+      wanderRangeY: isMobile ? 30 : 45,
       springSpeed: 0.032,
       wanderSeed: 4.8,
       flapSpeed: 1.02,
       climbSpeed: 56,
       awayZDrift: 4.2,
-      screenX: window.innerWidth * (isMobile ? 0.88 : 0.84),
-      screenY: window.innerHeight * 0.48,
+      screenX: window.innerWidth * (isMobile ? 0.90 : 0.84),
+      screenY: window.innerHeight * (isMobile ? 0.42 : 0.48),
       currentZ: 0.0,
       awayFactor: 0.0,
       flapPhase: 1.7,
-      baseYaw: -0.28  // 중앙 스토리를 바라보는 우아한 안쪽 각도
+      baseYaw: -0.28
     },
-    // [3. 작은 철새 - 중거리 상공 좌측]
+
+    // [Layer 2: V자 편대 비행 리더 및 날개 철새들 - 중거리]
     {
       id: 2,
       type: 'flock',
-      scale: 0.52,
-      zBase: -2.0,
-      baseAngle: 2.25,     // 좌상단
-      baseRadius: 180,
-      spreadDistance: 240,
-      springSpeed: 0.030,
-      wanderSeed: 2.6,
-      flapSpeed: 1.15,
-      climbSpeed: 75,
-      awayZDrift: 5.5,
-      screenX: window.innerWidth * 0.5 - 130,
-      screenY: window.innerHeight * 0.48 - 110,
-      currentZ: -2.0,
+      scale: isMobile ? 0.44 : 0.55,
+      zBase: -1.8,
+      baseAngle: 1.60, // 상공 중앙 선두
+      baseRadius: isMobile ? 130 : 170,
+      spreadDistance: 220,
+      springSpeed: 0.032,
+      wanderSeed: 2.1,
+      flapSpeed: 1.10,
+      climbSpeed: 70,
+      awayZDrift: 5.0,
+      screenX: window.innerWidth * 0.5,
+      screenY: window.innerHeight * (isMobile ? 0.32 : 0.42) - 120,
+      currentZ: -1.8,
       awayFactor: 0.0,
-      flapPhase: 0.6
+      flapPhase: 0.3
     },
-    // [4. 작은 철새 - 중거리 상공 우측]
     {
       id: 3,
       type: 'flock',
-      scale: 0.46,
-      zBase: -2.8,
-      baseAngle: 1.05,     // 우상단
-      baseRadius: 200,
-      spreadDistance: 260,
-      springSpeed: 0.026,
-      wanderSeed: 3.9,
-      flapSpeed: 1.10,
-      climbSpeed: 82,
-      awayZDrift: 6.2,
-      screenX: window.innerWidth * 0.5 + 140,
-      screenY: window.innerHeight * 0.48 - 120,
-      currentZ: -2.8,
+      scale: isMobile ? 0.40 : 0.50,
+      zBase: -2.3,
+      baseAngle: 2.15, // 좌측 날개 1
+      baseRadius: isMobile ? 160 : 210,
+      spreadDistance: 240,
+      springSpeed: 0.029,
+      wanderSeed: 3.4,
+      flapSpeed: 1.18,
+      climbSpeed: 75,
+      awayZDrift: 5.6,
+      screenX: window.innerWidth * 0.5 - 110,
+      screenY: window.innerHeight * (isMobile ? 0.32 : 0.42) - 90,
+      currentZ: -2.3,
       awayFactor: 0.0,
-      flapPhase: 2.1
+      flapPhase: 1.1
     },
-    // [5. 작은 철새 - 중원거리 하단]
     {
       id: 4,
       type: 'flock',
-      scale: 0.40,
-      zBase: -3.8,
-      baseAngle: 3.85,     // 좌하단
-      baseRadius: 220,
-      spreadDistance: 270,
-      springSpeed: 0.024,
-      wanderSeed: 5.4,
-      flapSpeed: 0.98,
-      climbSpeed: 88,
-      awayZDrift: 7.0,
-      screenX: window.innerWidth * 0.5 - 150,
-      screenY: window.innerHeight * 0.48 + 100,
-      currentZ: -3.8,
+      scale: isMobile ? 0.38 : 0.48,
+      zBase: -2.5,
+      baseAngle: 1.10, // 우측 날개 1
+      baseRadius: isMobile ? 170 : 220,
+      spreadDistance: 250,
+      springSpeed: 0.027,
+      wanderSeed: 4.2,
+      flapSpeed: 1.05,
+      climbSpeed: 78,
+      awayZDrift: 5.8,
+      screenX: window.innerWidth * 0.5 + 115,
+      screenY: window.innerHeight * (isMobile ? 0.32 : 0.42) - 85,
+      currentZ: -2.5,
       awayFactor: 0.0,
-      flapPhase: 1.3
+      flapPhase: 2.4
     },
-    // [6. 작은 철새 - 원거리 높은 하늘]
     {
       id: 5,
       type: 'flock',
-      scale: 0.32,
-      zBase: -5.8,
-      baseAngle: 1.62,     // 상공 하늘
-      baseRadius: 290,
-      spreadDistance: 320,
-      springSpeed: 0.018,
-      wanderSeed: 7.2,
-      flapSpeed: 1.08,
-      climbSpeed: 110,
-      awayZDrift: 9.0,
-      screenX: window.innerWidth * 0.5 - 20,
-      screenY: window.innerHeight * 0.48 - 200,
-      currentZ: -5.8,
+      scale: isMobile ? 0.34 : 0.44,
+      zBase: -3.0,
+      baseAngle: 2.50, // 좌측 날개 2 (더 뒤쪽)
+      baseRadius: isMobile ? 190 : 260,
+      spreadDistance: 270,
+      springSpeed: 0.025,
+      wanderSeed: 5.7,
+      flapSpeed: 1.14,
+      climbSpeed: 82,
+      awayZDrift: 6.4,
+      screenX: window.innerWidth * 0.5 - 170,
+      screenY: window.innerHeight * (isMobile ? 0.32 : 0.42) - 60,
+      currentZ: -3.0,
       awayFactor: 0.0,
-      flapPhase: 3.7
+      flapPhase: 3.2
     },
-    // [7. 작은 철새 - 수평선 너머 글라이더]
     {
       id: 6,
       type: 'flock',
-      scale: 0.24,
-      zBase: -7.8,
-      baseAngle: 0.18,     // 먼 수평선
-      baseRadius: 360,
-      spreadDistance: 360,
+      scale: isMobile ? 0.35 : 0.43,
+      zBase: -3.2,
+      baseAngle: 0.85, // 우측 날개 2 (더 뒤쪽)
+      baseRadius: isMobile ? 200 : 270,
+      spreadDistance: 280,
+      springSpeed: 0.024,
+      wanderSeed: 6.3,
+      flapSpeed: 1.08,
+      climbSpeed: 84,
+      awayZDrift: 6.6,
+      screenX: window.innerWidth * 0.5 + 180,
+      screenY: window.innerHeight * (isMobile ? 0.32 : 0.42) - 55,
+      currentZ: -3.2,
+      awayFactor: 0.0,
+      flapPhase: 4.1
+    },
+
+    // [Layer 3: 중원거리 한강 하구 유영 무리]
+    {
+      id: 7,
+      type: 'flock',
+      scale: isMobile ? 0.30 : 0.38,
+      zBase: -4.0,
+      baseAngle: 3.40, // 좌하단 강변 선회
+      baseRadius: isMobile ? 180 : 250,
+      spreadDistance: 270,
+      springSpeed: 0.022,
+      wanderSeed: 7.1,
+      flapSpeed: 0.95,
+      climbSpeed: 88,
+      awayZDrift: 7.2,
+      screenX: window.innerWidth * 0.5 - 190,
+      screenY: window.innerHeight * (isMobile ? 0.32 : 0.42) + 70,
+      currentZ: -4.0,
+      awayFactor: 0.0,
+      flapPhase: 1.8
+    },
+    {
+      id: 8,
+      type: 'flock',
+      scale: isMobile ? 0.28 : 0.36,
+      zBase: -4.5,
+      baseAngle: 5.90, // 우하단 수면 선회
+      baseRadius: isMobile ? 190 : 260,
+      spreadDistance: 280,
+      springSpeed: 0.020,
+      wanderSeed: 8.4,
+      flapSpeed: 1.02,
+      climbSpeed: 92,
+      awayZDrift: 7.8,
+      screenX: window.innerWidth * 0.5 + 200,
+      screenY: window.innerHeight * (isMobile ? 0.32 : 0.42) + 65,
+      currentZ: -4.5,
+      awayFactor: 0.0,
+      flapPhase: 2.9
+    },
+    {
+      id: 9,
+      type: 'flock',
+      scale: isMobile ? 0.26 : 0.34,
+      zBase: -5.2,
+      baseAngle: 1.95, // 상공 고공 비행
+      baseRadius: isMobile ? 210 : 300,
+      spreadDistance: 310,
+      springSpeed: 0.019,
+      wanderSeed: 9.2,
+      flapSpeed: 1.15,
+      climbSpeed: 98,
+      awayZDrift: 8.5,
+      screenX: window.innerWidth * 0.5 - 60,
+      screenY: window.innerHeight * (isMobile ? 0.32 : 0.42) - 170,
+      currentZ: -5.2,
+      awayFactor: 0.0,
+      flapPhase: 0.8
+    },
+    {
+      id: 10,
+      type: 'flock',
+      scale: isMobile ? 0.24 : 0.31,
+      zBase: -5.8,
+      baseAngle: 1.30, // 상공 고공 비행 2
+      baseRadius: isMobile ? 220 : 310,
+      spreadDistance: 320,
+      springSpeed: 0.018,
+      wanderSeed: 10.6,
+      flapSpeed: 1.10,
+      climbSpeed: 104,
+      awayZDrift: 9.0,
+      screenX: window.innerWidth * 0.5 + 70,
+      screenY: window.innerHeight * (isMobile ? 0.32 : 0.42) - 165,
+      currentZ: -5.8,
+      awayFactor: 0.0,
+      flapPhase: 3.5
+    },
+
+    // [Layer 4: 수평선 너머 아련한 원거리 철새 떼]
+    {
+      id: 11,
+      type: 'flock',
+      scale: isMobile ? 0.20 : 0.26,
+      zBase: -7.2,
+      baseAngle: 1.62, // 아주 높은 상공 하늘
+      baseRadius: isMobile ? 250 : 360,
+      spreadDistance: 350,
+      springSpeed: 0.016,
+      wanderSeed: 11.8,
+      flapSpeed: 1.20,
+      climbSpeed: 115,
+      awayZDrift: 10.2,
+      screenX: window.innerWidth * 0.5 + 10,
+      screenY: window.innerHeight * (isMobile ? 0.32 : 0.42) - 220,
+      currentZ: -7.2,
+      awayFactor: 0.0,
+      flapPhase: 4.8
+    },
+    {
+      id: 12,
+      type: 'flock',
+      scale: isMobile ? 0.16 : 0.22,
+      zBase: -8.8,
+      baseAngle: 0.25, // 먼 지평선 우측
+      baseRadius: isMobile ? 280 : 400,
+      spreadDistance: 380,
       springSpeed: 0.014,
-      wanderSeed: 8.8,
+      wanderSeed: 12.5,
       flapSpeed: 1.25,
       climbSpeed: 125,
-      awayZDrift: 11.2,
-      screenX: window.innerWidth * 0.5 + 240,
-      screenY: window.innerHeight * 0.48 - 70,
-      currentZ: -7.8,
+      awayZDrift: 11.5,
+      screenX: window.innerWidth * 0.5 + 260,
+      screenY: window.innerHeight * (isMobile ? 0.32 : 0.42) - 90,
+      currentZ: -8.8,
       awayFactor: 0.0,
-      flapPhase: 4.5
+      flapPhase: 1.5
+    },
+    {
+      id: 13,
+      type: 'flock',
+      scale: isMobile ? 0.15 : 0.19,
+      zBase: -10.2,
+      baseAngle: 3.10, // 먼 지평선 좌측
+      baseRadius: isMobile ? 290 : 420,
+      spreadDistance: 400,
+      springSpeed: 0.012,
+      wanderSeed: 13.7,
+      flapSpeed: 1.30,
+      climbSpeed: 135,
+      awayZDrift: 12.8,
+      screenX: window.innerWidth * 0.5 - 270,
+      screenY: window.innerHeight * (isMobile ? 0.32 : 0.42) - 80,
+      currentZ: -10.2,
+      awayFactor: 0.0,
+      flapPhase: 2.7
     }
   ];
 
@@ -1503,10 +1637,10 @@ function initQuillBirdCompanion() {
 
     const mob = window.innerWidth < 768;
     if (FLOCK && FLOCK.length >= 2) {
-      FLOCK[0].anchorXRatio = mob ? 0.12 : 0.16;
-      FLOCK[1].anchorXRatio = mob ? 0.88 : 0.84;
-      const s0 = mob ? 1.15 : 1.68;
-      const s1 = mob ? 1.10 : 1.62;
+      FLOCK[0].anchorXRatio = mob ? 0.10 : 0.16;
+      FLOCK[1].anchorXRatio = mob ? 0.90 : 0.84;
+      const s0 = mob ? 1.05 : 1.68;
+      const s1 = mob ? 1.00 : 1.62;
       FLOCK[0].mesh.root.scale.set(s0, s0, s0);
       FLOCK[1].mesh.root.scale.set(s1, s1, s1);
     }
@@ -1534,7 +1668,7 @@ function initQuillBirdCompanion() {
     const activeScrollBoost = Math.min(Math.abs(scrollVel) * 0.14, 8.5);
 
     const centerX = window.innerWidth * 0.5;
-    const centerY = window.innerHeight * 0.48;
+    const centerY = window.innerHeight * (isMobile ? 0.35 : 0.48);
 
     // 3. Update each bird in the flock (화면 좌우측 대형 새 2마리 + 배경 작은 새 무리)
     FLOCK.forEach(bird => {
@@ -1574,7 +1708,7 @@ function initQuillBirdCompanion() {
         const effectiveAngle = bird.baseAngle + wanderAngle;
 
         const spreadX = Math.cos(effectiveAngle) * currentRadius * 1.25;
-        const spreadY = -Math.sin(effectiveAngle) * currentRadius * 0.72;
+        const spreadY = -Math.sin(effectiveAngle) * currentRadius * (isMobile ? 0.52 : 0.72);
         const climbUpY = bird.awayFactor * bird.climbSpeed * 2.2;
         const wanderJitter = Math.cos(timeSec * 1.2 + bird.wanderSeed) * 10;
 
