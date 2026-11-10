@@ -244,7 +244,7 @@ body.is-loading {
   fill: rgba(0, 0, 0, 0.52);
   opacity: 0;
   will-change: opacity, transform;
-  animation: fade-box-label 0.45s ease 1.05s forwards;
+  animation: fade-box-label 0.55s ease 1.30s forwards;
 }
 
 @keyframes fade-bp-text {
@@ -276,13 +276,17 @@ body.is-loading {
   filter: drop-shadow(0 0.5px 1px rgba(0, 0, 0, 0.15));
 }
 
-/* 5개 박스 윤곽선 펜 드로잉: 순차적이 아닌 동시에 라인 드로잉 전개 */
+/* 4개 기본 박스 (N, E, W, S): 1.5초 동안 천천히 자연스럽게 드로잉 */
 .box-trace-n,
 .box-trace-e,
 .box-trace-w,
-.box-trace-s,
+.box-trace-s {
+  animation: draw-quill-box 1.50s cubic-bezier(0.25, 0.1, 0.25, 1) 0.60s forwards;
+}
+
+/* 제일 긴 박스 (CAPE): 길이가 길어 비례에 맞춰 좀 더 길게 1.85초 동안 드로잉 */
 .box-trace-cape {
-  animation: draw-quill-box 0.82s cubic-bezier(0.25, 0.1, 0.25, 1) 0.65s forwards;
+  animation: draw-quill-box 1.85s cubic-bezier(0.25, 0.1, 0.25, 1) 0.60s forwards;
 }
 
 @keyframes draw-quill-box {
@@ -291,7 +295,7 @@ body.is-loading {
   }
 }
 
-/* 2. Solid Black Architectural Mass (라인 드로잉 완료에 맞춰 먹물이 스며들듯 동시 채움) */
+/* 2. Solid Black Architectural Mass (라인 드로잉 완성에 맞춰 먹물이 스며들듯 채움) */
 .logo-box {
   position: absolute;
   background: #000000;
@@ -301,13 +305,17 @@ body.is-loading {
   z-index: 4;
 }
 
-/* 5개 박스 채움: 라인 드로잉 완료 시점에 맞춰 동시에 채움 */
+/* N, E, W, S 박스 채움: 1.5초 드로잉 완료(2.10s)에 맞춰 채움 */
 .logo-box.box-n,
 .logo-box.box-e,
 .logo-box.box-w,
-.logo-box.box-s,
+.logo-box.box-s {
+  animation: fill-box-mass 0.50s cubic-bezier(0.25, 1, 0.5, 1) 2.10s forwards;
+}
+
+/* CAPE 박스 채움: 1.85초 드로잉 완료(2.45s)에 맞춰 채움 */
 .logo-box.box-cape {
-  animation: fill-box-mass 0.52s cubic-bezier(0.25, 1, 0.5, 1) 1.50s forwards;
+  animation: fill-box-mass 0.52s cubic-bezier(0.25, 1, 0.5, 1) 2.45s forwards;
 }
 
 .logo-box.box-n {
@@ -364,7 +372,7 @@ body.is-loading {
   pointer-events: none;
   opacity: 0;
   filter: blur(6px);
-  animation: logo-reveal-smooth 0.80s cubic-bezier(0.22, 1, 0.36, 1) 1.95s forwards;
+  animation: logo-reveal-smooth 0.80s cubic-bezier(0.22, 1, 0.36, 1) 2.85s forwards;
   will-change: opacity, filter, transform;
 }
 

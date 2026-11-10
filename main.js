@@ -1839,8 +1839,8 @@ function initVideoLoadingScreen() {
     lenis.stop();
   }
 
-  // 건축 도면 스케치 & 로고 결합 감상 후 시네마틱 디졸브 (동시 라인 전개에 맞춰 3050ms로 최적화)
-  const FIXED_LOADING_TIME = 3050;
+  // 건축 도면 스케치 & 로고 결합 감상 후 시네마틱 디졸브 (1.5s~1.85s 자연스러운 펜 드로잉 호흡에 맞춰 3950ms 설정)
+  const FIXED_LOADING_TIME = 3950;
   timerId = setTimeout(dismissLoader, FIXED_LOADING_TIME);
 }
 
