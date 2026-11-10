@@ -903,6 +903,7 @@ body.is-loading {
   opacity: 1 !important;
   filter: none !important;
   transform: none !important;
+  text-shadow: 0 2px 14px rgba(0, 0, 0, 0.65), 0 1px 4px rgba(0, 0, 0, 0.55);
 }
 
 /* ============================================================================
@@ -914,6 +915,7 @@ body.is-loading {
   opacity: 0.20;
   transform: translateY(12px);
   color: rgba(215, 222, 232, 0.24);
+  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.45);
   transition:
     opacity 0.5s var(--ease-out),
     transform 0.5s var(--ease-out),
@@ -921,20 +923,25 @@ body.is-loading {
     text-shadow 0.45s var(--ease-out);
 }
 
-/* 스크롤해서 올라와 포커스된 줄: 100% 순백색으로 채워짐 */
+/* 스크롤해서 올라와 포커스된 줄: 2단계 강화된 또렷하고 깊은 그림자 */
 .focus-line.is-focused {
   opacity: 1.0;
   transform: translateY(0);
   color: #ffffff !important;
-  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.35);
+  text-shadow:
+    0 2px 14px rgba(0, 0, 0, 0.85),
+    0 4px 26px rgba(0, 0, 0, 0.65),
+    0 1px 3px rgba(0, 0, 0, 0.90);
 }
 
-/* 스크롤을 지나쳐 위로 올라간 줄: 차분하고 깨끗한 화이트톤 유지 */
+/* 스크롤을 지나쳐 위로 올라간 줄: 차분한 화이트톤 + 2단계 가독성 그림자 */
 .focus-line.is-passed {
   opacity: 0.75;
   transform: translateY(0);
   color: rgba(255, 255, 255, 0.85);
-  text-shadow: none;
+  text-shadow:
+    0 2px 12px rgba(0, 0, 0, 0.65),
+    0 1px 3px rgba(0, 0, 0, 0.55);
 }
 
 .story-text .highlight {
@@ -1167,6 +1174,10 @@ figcaption {
   line-height: 1.8;
   font-weight: 500;
   color: #ffffff;
+  text-shadow:
+    0 2px 14px rgba(0, 0, 0, 0.85),
+    0 4px 26px rgba(0, 0, 0, 0.65),
+    0 1px 3px rgba(0, 0, 0, 0.90);
 }
 
 .signature {
@@ -1174,6 +1185,9 @@ figcaption {
   font-size: 1.25rem;
   color: rgba(255, 255, 255, 0.8);
   margin-top: 2rem;
+  text-shadow:
+    0 2px 12px rgba(0, 0, 0, 0.75),
+    0 1px 3px rgba(0, 0, 0, 0.60);
 }
 
 /* ============================================================================
