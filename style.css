@@ -648,7 +648,7 @@ body.is-loading {
 }
 
 /* ============================================================================
-   CELESTIAL ATMOSPHERIC LAYER (5번 탭 지난 후 펜화 구름 & 7번 탭 지난 후 펜화 달)
+   CELESTIAL ATMOSPHERIC LAYER (5번 탭 지난 후 펜화 구름 & 7번 탭 지난 후 3D 펜화 달)
    ============================================================================ */
 .sky-celestial-layer {
   position: fixed;
@@ -658,18 +658,17 @@ body.is-loading {
   overflow: hidden;
 }
 
-/* 1. 최상단 펜 스케치 곡선 구름 (5번 탭을 지나면 최상단에 부드럽게 유영하며 등장) */
+/* 1. 최상단 독립된 다층 3D 펜 스케치 뭉게구름 군집 */
 .sky-clouds {
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
-  height: clamp(140px, 20vh, 210px);
+  height: clamp(160px, 24vh, 260px);
   opacity: 0;
-  transform: translateY(-24px);
+  transform: translateY(-26px);
   transition: opacity 1.5s cubic-bezier(0.22, 1, 0.36, 1), transform 1.5s cubic-bezier(0.22, 1, 0.36, 1);
   will-change: opacity, transform;
-  filter: drop-shadow(0 2px 10px rgba(0, 0, 0, 0.03));
 }
 
 .sky-clouds.is-active {
@@ -677,56 +676,131 @@ body.is-loading {
   transform: translateY(0);
 }
 
-.cloud-drift-track {
+/* 개별 3D 구름 덩어리 공통 */
+.cloud-cluster {
   position: absolute;
-  top: 0;
-  left: -20%;
-  width: 140%;
-  height: 100%;
+  pointer-events: none;
+  will-change: transform;
+  filter: drop-shadow(0 4px 14px rgba(0, 0, 0, 0.04));
 }
 
-.cloud-svg {
+.cloud-cluster-svg {
   width: 100%;
-  height: 100%;
+  height: auto;
   display: block;
+  overflow: visible;
 }
 
-.cloud-drift-track.track-a {
-  animation: cloud-float-a 42s ease-in-out infinite alternate;
+/* 1-A. 대형 3D 뭉게구름 덩어리 (좌상단 메인 볼륨) */
+.cloud-cluster.cluster-lg-1 {
+  top: clamp(8px, 2vh, 25px);
+  left: clamp(2%, 4vw, 8%);
+  width: clamp(240px, 28vw, 380px);
+  animation: float-cloud-1 24s ease-in-out infinite alternate;
 }
 
-.cloud-drift-track.track-b {
-  animation: cloud-float-b 52s ease-in-out infinite alternate;
-  opacity: 0.85;
+/* 1-B. 중대형 3D 뭉게구름 덩어리 (중앙 상공 볼륨) */
+.cloud-cluster.cluster-md-1 {
+  top: clamp(4px, 1.2vh, 18px);
+  left: clamp(40%, 46vw, 55%);
+  width: clamp(200px, 22vw, 310px);
+  animation: float-cloud-2 28s ease-in-out infinite alternate;
 }
 
-@keyframes cloud-float-a {
+/* 1-C. 중소형 3D 유선형 구름 덩어리 (중앙 좌측 부유) */
+.cloud-cluster.cluster-md-2 {
+  top: clamp(65px, 9vh, 95px);
+  left: clamp(22%, 26vw, 34%);
+  width: clamp(150px, 16vw, 220px);
+  animation: float-cloud-3 20s ease-in-out infinite alternate;
+}
+
+/* 1-D. 소형 3D 뭉게구름 덩어리 (우상단 하늘 부유) */
+.cloud-cluster.cluster-sm-1 {
+  top: clamp(20px, 3vh, 45px);
+  right: clamp(16%, 20vw, 26%);
+  width: clamp(115px, 12vw, 170px);
+  animation: float-cloud-4 22s ease-in-out infinite alternate;
+}
+
+/* 1-E. 원거리 미니 3D 펜 구름 (우측 하단) */
+.cloud-cluster.cluster-sm-2 {
+  top: clamp(90px, 12vh, 130px);
+  right: clamp(4%, 6vw, 9%);
+  width: clamp(90px, 9.5vw, 135px);
+  animation: float-cloud-5 18s ease-in-out infinite alternate;
+}
+
+/* 개별 구름 덩어리별 유기적 부유 애니메이션 (좌우 유영 + 상하 완만한 호흡) */
+@keyframes float-cloud-1 {
   0% {
-    transform: translateX(0);
+    transform: translate(0, 0);
+  }
+  50% {
+    transform: translate(14px, -5px);
   }
   100% {
-    transform: translateX(7%);
+    transform: translate(-8px, 4px);
   }
 }
 
-@keyframes cloud-float-b {
+@keyframes float-cloud-2 {
   0% {
-    transform: translateX(0);
+    transform: translate(0, 0);
+  }
+  50% {
+    transform: translate(-16px, 6px);
   }
   100% {
-    transform: translateX(-5%);
+    transform: translate(10px, -4px);
   }
 }
 
-/* 2. 고요한 밤의 펜 드로잉 달 (7번 탭을 지나면 상공 우측에 고요하게 떠오름) */
+@keyframes float-cloud-3 {
+  0% {
+    transform: translate(0, 0);
+  }
+  50% {
+    transform: translate(12px, 5px);
+  }
+  100% {
+    transform: translate(-12px, -3px);
+  }
+}
+
+@keyframes float-cloud-4 {
+  0% {
+    transform: translate(0, 0);
+  }
+  50% {
+    transform: translate(-10px, -4px);
+  }
+  100% {
+    transform: translate(8px, 6px);
+  }
+}
+
+@keyframes float-cloud-5 {
+  0% {
+    transform: translate(0, 0);
+  }
+  50% {
+    transform: translate(10px, 3px);
+  }
+  100% {
+    transform: translate(-6px, -4px);
+  }
+}
+
+/* 2. 고요한 밤의 3차원 입체 펜 드로잉 달 (7번 탭을 지나면 상공 우측에 고요하게 떠오름) */
 .sky-moon {
   position: absolute;
-  top: clamp(68px, 11vh, 125px);
-  right: clamp(20px, 6vw, 110px);
-  width: clamp(75px, 9.5vw, 110px);
-  height: clamp(75px, 9.5vw, 110px);
+  top: clamp(65px, 10vh, 120px);
+  right: clamp(18px, 5.5vw, 105px);
+  width: clamp(82px, 10.5vw, 125px);
+  height: clamp(82px, 10.5vw, 125px);
   opacity: 0;
-  transform: translateY(32px) scale(0.92);
+  transform: translateY(32px) scale(0.90);
   transition: opacity 1.6s cubic-bezier(0.22, 1, 0.36, 1), transform 1.6s cubic-bezier(0.22, 1, 0.36, 1);
   will-change: opacity, transform;
 }
@@ -738,21 +812,21 @@ body.is-loading {
 
 .moon-halo {
   position: absolute;
-  inset: -25%;
+  inset: -28%;
   border-radius: 50%;
   background: radial-gradient(
     circle,
-    rgba(255, 252, 240, 0.70) 0%,
-    rgba(245, 238, 220, 0.30) 45%,
-    rgba(235, 228, 210, 0) 75%
+    rgba(255, 252, 238, 0.75) 0%,
+    rgba(245, 238, 220, 0.32) 42%,
+    rgba(235, 228, 210, 0) 72%
   );
-  filter: blur(14px);
+  filter: blur(16px);
   animation: moon-halo-pulse 7s ease-in-out infinite alternate;
 }
 
 @keyframes moon-halo-pulse {
   0% {
-    transform: scale(0.95);
+    transform: scale(0.94);
     opacity: 0.65;
   }
   100% {
@@ -761,12 +835,19 @@ body.is-loading {
   }
 }
 
+.moon-sphere-wrap {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  perspective: 700px;
+}
+
 .moon-svg {
   position: relative;
   width: 100%;
   height: 100%;
   display: block;
-  filter: drop-shadow(0 4px 16px rgba(0, 0, 0, 0.07));
+  filter: drop-shadow(0 6px 20px rgba(0, 0, 0, 0.08));
 }
 
 .sky-moon.is-active .moon-svg {
@@ -778,10 +859,10 @@ body.is-loading {
     transform: translateY(0) rotate(0deg);
   }
   50% {
-    transform: translateY(-5px) rotate(1.2deg);
+    transform: translateY(-6px) rotate(1.5deg);
   }
   100% {
-    transform: translateY(4px) rotate(-1deg);
+    transform: translateY(5px) rotate(-1.2deg);
   }
 }
 
