@@ -276,17 +276,41 @@ body.is-loading {
   filter: drop-shadow(0 0.5px 1px rgba(0, 0, 0, 0.15));
 }
 
-/* 4개 기본 박스 (N, E, W, S): 0.30s 시점에 동시 출발하여 0.95s 동안 드로잉 (1.25s 완료) */
-.box-trace-n,
-.box-trace-e,
-.box-trace-w,
-.box-trace-s {
-  animation: draw-quill-box 0.95s cubic-bezier(0.25, 0.1, 0.25, 1) 0.30s forwards;
+/* 1-C. Quill Pen Sketch Contours (자연스러운 Tween 곡선의 펜 드로잉 - 4개 박스 인터벌 시차 부여) */
+.quill-outline {
+  stroke: #000000;
+  stroke-width: 1.35px;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  fill: none;
+  stroke-dasharray: 100;
+  stroke-dashoffset: 100;
+  filter: drop-shadow(0 0.5px 1px rgba(0, 0, 0, 0.15));
 }
 
-/* 제일 긴 박스 (CAPE): 길이가 길어 비례에 맞춰 1.15s 동안 드로잉 (1.45s 완료) */
+/* N 박스: 0.22s 시작, 0.80s 드로잉 -> 1.02s 완료 */
+.box-trace-n {
+  animation: draw-quill-box 0.80s cubic-bezier(0.25, 0.1, 0.25, 1) 0.22s forwards;
+}
+
+/* E 박스: 0.32s 시작 (0.10s 인터벌 시차), 0.80s 드로잉 -> 1.12s 완료 */
+.box-trace-e {
+  animation: draw-quill-box 0.80s cubic-bezier(0.25, 0.1, 0.25, 1) 0.32s forwards;
+}
+
+/* W 박스: 0.42s 시작 (0.10s 인터벌 시차), 0.80s 드로잉 -> 1.22s 완료 */
+.box-trace-w {
+  animation: draw-quill-box 0.80s cubic-bezier(0.25, 0.1, 0.25, 1) 0.42s forwards;
+}
+
+/* S 박스: 0.52s 시작 (0.10s 인터벌 시차), 0.80s 드로잉 -> 1.32s 완료 */
+.box-trace-s {
+  animation: draw-quill-box 0.80s cubic-bezier(0.25, 0.1, 0.25, 1) 0.52s forwards;
+}
+
+/* CAPE 박스: 긴 가로 길이 비례에 맞춰 0.46s 시작, 0.95s 드로잉 -> 1.41s 완료 */
 .box-trace-cape {
-  animation: draw-quill-box 1.15s cubic-bezier(0.25, 0.1, 0.25, 1) 0.30s forwards;
+  animation: draw-quill-box 0.95s cubic-bezier(0.25, 0.1, 0.25, 1) 0.46s forwards;
 }
 
 @keyframes draw-quill-box {
@@ -295,7 +319,7 @@ body.is-loading {
   }
 }
 
-/* 2. Solid Black Architectural Mass (라인 드로잉 완성에 맞춰 먹물이 스며들듯 채움) */
+/* 2. Solid Black Architectural Mass (각 박스 드로잉 완료에 맞춘 인터벌 먹물 채움) */
 .logo-box {
   position: absolute;
   background: #000000;
@@ -305,17 +329,29 @@ body.is-loading {
   z-index: 4;
 }
 
-/* N, E, W, S 박스 채움: 드로잉 완료(1.25s) 직후 0.25s 동안 신속하게 먹물 채움 (1.50s 완료) */
-.logo-box.box-n,
-.logo-box.box-e,
-.logo-box.box-w,
-.logo-box.box-s {
-  animation: fill-box-mass 0.25s cubic-bezier(0.25, 1, 0.5, 1) 1.25s forwards;
+/* N 박스 채움: 드로잉 완료(1.02s) 직후 0.24s 채움 (1.26s 완료) */
+.logo-box.box-n {
+  animation: fill-box-mass 0.24s cubic-bezier(0.25, 1, 0.5, 1) 1.02s forwards;
 }
 
-/* CAPE 박스 채움: 드로잉 완료(1.45s) 직후 0.25s 동안 채움 (1.70s 완료) */
+/* E 박스 채움: 드로잉 완료(1.12s) 직후 0.24s 채움 (1.36s 완료) */
+.logo-box.box-e {
+  animation: fill-box-mass 0.24s cubic-bezier(0.25, 1, 0.5, 1) 1.12s forwards;
+}
+
+/* W 박스 채움: 드로잉 완료(1.22s) 직후 0.24s 채움 (1.46s 완료) */
+.logo-box.box-w {
+  animation: fill-box-mass 0.24s cubic-bezier(0.25, 1, 0.5, 1) 1.22s forwards;
+}
+
+/* S 박스 채움: 드로잉 완료(1.32s) 직후 0.24s 채움 (1.56s 완료) */
+.logo-box.box-s {
+  animation: fill-box-mass 0.24s cubic-bezier(0.25, 1, 0.5, 1) 1.32s forwards;
+}
+
+/* CAPE 박스 채움: 드로잉 완료(1.41s) 직후 0.24s 채움 (1.65s 완료) */
 .logo-box.box-cape {
-  animation: fill-box-mass 0.25s cubic-bezier(0.25, 1, 0.5, 1) 1.45s forwards;
+  animation: fill-box-mass 0.24s cubic-bezier(0.25, 1, 0.5, 1) 1.41s forwards;
 }
 
 .logo-box.box-n {
@@ -362,7 +398,7 @@ body.is-loading {
   }
 }
 
-/* 3. NEWSCAPE Letters Overlay (1.55s 시점 출발하여 1.95s에 2초 이내 완전 형성) */
+/* 3. NEWSCAPE Letters Overlay (1.52s 시점 출발하여 1.90s에 2초 이내 완전 형성) */
 .logo-letters-overlay {
   position: absolute;
   inset: 0;
@@ -372,7 +408,7 @@ body.is-loading {
   pointer-events: none;
   opacity: 0;
   filter: blur(5px);
-  animation: logo-reveal-smooth 0.40s cubic-bezier(0.22, 1, 0.36, 1) 1.55s forwards;
+  animation: logo-reveal-smooth 0.38s cubic-bezier(0.22, 1, 0.36, 1) 1.52s forwards;
   will-change: opacity, filter, transform;
 }
 
