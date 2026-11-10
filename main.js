@@ -465,6 +465,20 @@ if (brandLink) {
   });
 }
 
+// Fast-Access INFO Anchor buttons (상단 헤더 & 히어로 영역에서 10번 방문/안내 섹션으로 즉시 이동)
+const quickInfoButtons = document.querySelectorAll('#btn-quick-info, #hero-btn-info');
+quickInfoButtons.forEach(btn => {
+  btn.addEventListener('click', (e) => {
+    e.preventDefault();
+    const secInfo = document.getElementById('sec-info');
+    if (lenis && secInfo) {
+      lenis.scrollTo(secInfo, { duration: 1.6, offset: 0 });
+    } else if (secInfo) {
+      secInfo.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  });
+});
+
 // ============================================================================
 // 6. LIGHTBOX MODAL (Modern Web Guidance Compliant)
 // ============================================================================
@@ -1731,10 +1745,13 @@ function initVideoLoadingScreen() {
   if (!loader) return;
 
   let isDismissed = false;
+  let timerId = null;
 
   function dismissLoader() {
     if (isDismissed) return;
     isDismissed = true;
+    if (timerId) clearTimeout(timerId);
+    window.removeEventListener('keydown', onKeyDown);
 
     // Smooth cinematic dissolve
     loader.classList.add('is-loaded');
@@ -1754,6 +1771,28 @@ function initVideoLoadingScreen() {
     }, 1200);
   }
 
+  // Fast-Access Skip Button for Returning Visitors
+  const btnSkip = document.getElementById('btn-skip-intro');
+  if (btnSkip) {
+    btnSkip.addEventListener('click', (e) => {
+      e.stopPropagation();
+      dismissLoader();
+    });
+  }
+
+  // Tap/Click anywhere on loader stage to skip
+  loader.addEventListener('click', () => {
+    dismissLoader();
+  });
+
+  // ESC key to skip immediately
+  function onKeyDown(e) {
+    if (e.key === 'Escape') {
+      dismissLoader();
+    }
+  }
+  window.addEventListener('keydown', onKeyDown);
+
   // Prevent scroll during intro loading screen & ensure scroll at top
   window.scrollTo(0, 0);
   if (lenis) {
@@ -1763,7 +1802,7 @@ function initVideoLoadingScreen() {
 
   // 건축 도면 스케치 & 로고 결합 감상 후 시네마틱 디졸브 (3850ms)
   const FIXED_LOADING_TIME = 3850;
-  setTimeout(dismissLoader, FIXED_LOADING_TIME);
+  timerId = setTimeout(dismissLoader, FIXED_LOADING_TIME);
 }
 
 // Initial trigger on DOM ready

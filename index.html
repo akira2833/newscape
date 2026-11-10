@@ -24,6 +24,12 @@
        (건축가의 사방 방위 제도선 -> 5개 공간 펜 스케치 드로잉 -> 블랙 매스 채움 -> 로고 안착)
        ======================================================================== -->
   <div class="site-loader" id="site-loader" role="status" aria-live="polite" aria-label="NEWSCAPE 로딩 중">
+    <!-- Fast-Access Skip Button for Returning Visitors -->
+    <button type="button" class="btn-skip-intro" id="btn-skip-intro" aria-label="인트로 건너뛰기">
+      <span>SKIP INTRO</span>
+      <span class="skip-arrow">→</span>
+    </button>
+
     <div class="loader-stage" aria-label="NEWSCAPE">
       <!-- 1. Architectural Blueprint & Compass Axis SVG Layer (사방 방위 제도선 & 펜 스케치 윤곽선) -->
       <svg class="loader-blueprint-svg" viewBox="0 0 720 559" aria-hidden="true">
@@ -202,10 +208,20 @@
   <canvas id="quill-bird-canvas" class="quill-bird-canvas" aria-hidden="true"></canvas>
 
   <!-- ========================================================================
-       FLOATING HUD (Chapter Counter & Soundscape Controls)
+       FLOATING HUD (Chapter Counter & Fast-Access Controls)
        ======================================================================== -->
   <header class="site-header">
+    <div class="header-left">
+      <a href="#sec-prologue" class="brand-link" id="brand-link" aria-label="NEWSCAPE 최상단으로 이동">
+        NEWSCAPE
+      </a>
+    </div>
+
     <div class="header-right">
+      <!-- Direct Quick Navigation for Returning Visitors -->
+      <a href="#sec-info" class="btn-hud-link btn-hud-info" id="btn-quick-info">INFO</a>
+      <a href="https://naver.me/5dhpW0Gf" target="_blank" rel="noopener" class="btn-hud-link btn-hud-book">예약하기 ↗</a>
+
       <!-- Chapter Jump Menu Trigger -->
       <nav class="nav-jump-wrap" id="nav-jump-wrap">
         <button type="button" class="btn-jump-toggle" id="btn-jump-toggle" aria-label="목차 열기">
@@ -264,9 +280,19 @@
     <!-- 00. PROLOGUE HERO SECTION -->
     <section class="story-section hero-section" id="sec-prologue" data-chapter="00" data-keyword="NEWSCAPE" data-sub="LEAVE THE NOISE · FIND THE FLAT">
       <div class="hero-content">
+        <div class="hero-coord-tag">37°38'42"N 126°44'18"E · GIMPO ESTUARY</div>
         <h1 class="sr-only">NEWSCAPE</h1>
         <p class="hero-tagline">Leave the noise,<br>Find the flat.</p>
+        <div class="hero-quick-links">
+          <a href="#sec-info" class="hero-quick-btn" id="hero-btn-info">운영시간 & 오시는 길 →</a>
+          <a href="https://naver.me/5dhpW0Gf" target="_blank" rel="noopener" class="hero-quick-btn accent">네이버 예약 바로가기 ↗</a>
+        </div>
         <div class="scroll-prompt">
+          <span class="prompt-line" aria-hidden="true"></span>
+          <span class="prompt-text">SCROLL TO EXPLORE THE STORY</span>
+        </div>
+      </div>
+    </section>
           <span class="prompt-arrow">↓</span>
           <span class="prompt-text">SCROLL TO EXPLORE THE STORY</span>
         </div>
