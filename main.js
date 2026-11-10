@@ -981,7 +981,6 @@ function initQuillBirdCompanion() {
   }
 
   // 1. 화면 좌우측에 크게 자리잡는 대형 철새 2마리 + 2. 상공과 원거리를 유영하는 작은 철새 무리
-  const isMobile = window.innerWidth < 768;
   const FLOCK = [
     // [1. 좌측 대형 철새]
     {
