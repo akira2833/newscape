@@ -1839,8 +1839,8 @@ function initVideoLoadingScreen() {
     lenis.stop();
   }
 
-  // 건축 도면 스케치 & 로고 결합 감상 후 시네마틱 디졸브 (박스/로고 1.5배 가속 결합에 맞춰 3350ms 설정)
-  const FIXED_LOADING_TIME = 3350;
+  // 건축 도면 스케치 & 로고 결합 감상(2초 이내 완성 + 1초 감상 후 정확히 3초에 시네마틱 디졸브)
+  const FIXED_LOADING_TIME = 3000;
   timerId = setTimeout(dismissLoader, FIXED_LOADING_TIME);
 }
 
