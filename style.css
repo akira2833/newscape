@@ -464,18 +464,23 @@ body.is-loading {
   filter: contrast(103%) brightness(0.92);
 }
 
-/* Cinematic Light / White Mist Scrim Overlays (블랙 대신 화이트톤 음영) */
+/* Pale Ivory Film Veil (옅은 아이보리색 70% 투명도 레이어 - 동영상이 보일듯 말듯 은은한 감상) */
 .video-scrim {
   position: absolute;
   inset: 0;
-  background: radial-gradient(circle at 50% 45%, rgba(255, 255, 255, 0.15) 0%, rgba(245, 247, 252, 0.45) 100%);
+  background-color: rgba(247, 245, 240, 0.70);
+  background: radial-gradient(
+    circle at 50% 48%,
+    rgba(248, 246, 242, 0.68) 0%,
+    rgba(245, 242, 235, 0.72) 100%
+  );
   z-index: 2;
 }
 
 .video-vignette {
   position: absolute;
   inset: 0;
-  box-shadow: inset 0 0 130px rgba(255, 255, 255, 0.55);
+  box-shadow: inset 0 0 160px rgba(235, 230, 218, 0.50);
   z-index: 3;
 }
 
