@@ -218,6 +218,8 @@ const btnSoundToggle = document.getElementById('btn-sound-toggle');
 const soundIcon = document.getElementById('sound-icon');
 const soundLabel = document.getElementById('sound-label');
 const btnCopyAddress = document.getElementById('btn-copy-address');
+const elSkyClouds = document.getElementById('sky-clouds');
+const elSkyMoon = document.getElementById('sky-moon');
 
 // State tracking
 let currentActiveSectionId = 'sec-prologue';
@@ -407,6 +409,24 @@ function handleScroll() {
     const sec03Top = cachedSec03DocTop - scrollY;
     isSec03InView = (sec03Top < viewportHeight * 0.85) && ((sec03Top + cachedSec03DocHeight) > viewportHeight * 0.12);
     isPastOrInSec03 = (sec03Top < viewportHeight * 0.85);
+  }
+
+  // 5. Sky Clouds & Moon triggers (6번 탭 지나면 구름, 8번 탭 지나면 달)
+  if (cachedSecMids.length > 0) {
+    const sec06 = cachedSecMids.find(s => s.id === 'sec-06');
+    const sec08 = cachedSecMids.find(s => s.id === 'sec-08');
+
+    // 6번 탭(sec-06: West — 무비릴스 같은 창)을 지났을 때: sec-06 하단이 뷰포트 상단부로 올라갔을 때 구름 등장
+    if (sec06 && elSkyClouds) {
+      const isPastSec06 = (sec06.bottomDoc - scrollY) <= (viewportHeight * 0.70);
+      elSkyClouds.classList.toggle('is-active', isPastSec06);
+    }
+
+    // 8번 탭(sec-08: South — 〈디파처스 DEPARTURES〉)을 지났을 때: sec-08 하단이 뷰포트 상단부로 올라갔을 때 달 등장
+    if (sec08 && elSkyMoon) {
+      const isPastSec08 = (sec08.bottomDoc - scrollY) <= (viewportHeight * 0.70);
+      elSkyMoon.classList.toggle('is-active', isPastSec08);
+    }
   }
 
   isTicking = false;

@@ -648,6 +648,127 @@ body.is-loading {
 }
 
 /* ============================================================================
+   CELESTIAL ATMOSPHERIC LAYER (6번 탭 지난 후 구름 & 8번 탭 지난 후 달)
+   ============================================================================ */
+.sky-celestial-layer {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 4; /* 배경 비디오 위, 본문 콘텐츠 및 HUD 아래 */
+  overflow: hidden;
+}
+
+/* 1. 최상단 서정적 구름 (6번 탭을 지나면 최상단에 부드럽게 유영하며 등장) */
+.sky-clouds {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: clamp(130px, 19vh, 200px);
+  opacity: 0;
+  transform: translateY(-24px);
+  transition: opacity 1.5s cubic-bezier(0.22, 1, 0.36, 1), transform 1.5s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: opacity, transform;
+}
+
+.sky-clouds.is-active {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.cloud-drift-track {
+  position: absolute;
+  top: 0;
+  left: -20%;
+  width: 140%;
+  height: 100%;
+}
+
+.cloud-svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.cloud-drift-track.track-a {
+  animation: cloud-float-a 42s ease-in-out infinite alternate;
+}
+
+.cloud-drift-track.track-b {
+  animation: cloud-float-b 52s ease-in-out infinite alternate;
+  opacity: 0.82;
+}
+
+@keyframes cloud-float-a {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(7%);
+  }
+}
+
+@keyframes cloud-float-b {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-5%);
+  }
+}
+
+/* 2. 고요한 밤의 건축적 달 (8번 탭을 지나면 상공 우측에 고요하게 떠오름) */
+.sky-moon {
+  position: absolute;
+  top: clamp(68px, 11vh, 125px);
+  right: clamp(20px, 6vw, 110px);
+  width: clamp(68px, 8.5vw, 100px);
+  height: clamp(68px, 8.5vw, 100px);
+  opacity: 0;
+  transform: translateY(32px) scale(0.92);
+  transition: opacity 1.6s cubic-bezier(0.22, 1, 0.36, 1), transform 1.6s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: opacity, transform;
+}
+
+.sky-moon.is-active {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+.moon-halo {
+  position: absolute;
+  inset: -22%;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(255, 250, 235, 0.75) 0%,
+    rgba(245, 238, 220, 0.35) 45%,
+    rgba(235, 228, 210, 0) 75%
+  );
+  filter: blur(14px);
+  animation: moon-halo-pulse 7s ease-in-out infinite alternate;
+}
+
+@keyframes moon-halo-pulse {
+  0% {
+    transform: scale(0.95);
+    opacity: 0.65;
+  }
+  100% {
+    transform: scale(1.08);
+    opacity: 0.95;
+  }
+}
+
+.moon-svg {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: block;
+  filter: drop-shadow(0 6px 18px rgba(0, 0, 0, 0.08));
+}
+
+/* ============================================================================
    QUILL 3D LINE-DRAWING COMPANION (고로 후지타 스타일 라인 드로잉 새)
    ============================================================================ */
 .quill-bird-canvas {
