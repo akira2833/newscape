@@ -1,0 +1,1432 @@
+/* ============================================================================
+   NEWSCAPE CINEMATIC SCROLLYTELLING STYLESHEET
+   Layer 1: Fullscreen Background Video
+   Layer 2: Middle Background Monumental Typography
+   Layer 3: Foreground Sequential Story Stream with Text Focusing
+   ============================================================================ */
+
+/* ============================================================================
+   WEB FONTS: NAVER MARU BURI (네이버 마루 부리)
+   ============================================================================ */
+@font-face {
+  font-family: 'MaruBuri';
+  src: url('https://hangeul.pstatic.net/hangeul_static/webfont/MaruBuri/MaruBuri-ExtraLight.woff2') format('woff2');
+  font-weight: 200;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'MaruBuri';
+  src: url('https://hangeul.pstatic.net/hangeul_static/webfont/MaruBuri/MaruBuri-Light.woff2') format('woff2');
+  font-weight: 300;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'MaruBuri';
+  src: url('https://hangeul.pstatic.net/hangeul_static/webfont/MaruBuri/MaruBuri-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'MaruBuri';
+  src: url('https://hangeul.pstatic.net/hangeul_static/webfont/MaruBuri/MaruBuri-SemiBold.woff2') format('woff2');
+  font-weight: 600;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'MaruBuri';
+  src: url('https://hangeul.pstatic.net/hangeul_static/webfont/MaruBuri/MaruBuri-Bold.woff2') format('woff2');
+  font-weight: 700;
+  font-display: swap;
+}
+
+:root {
+  --bg-dark: #070707;
+  --text-main: #f0f3f6;
+  --text-dim: rgba(240, 243, 246, 0.45);
+  --text-ghost: rgba(240, 243, 246, 0.15);
+  --accent-gold: #e5b869;
+  --accent-cyan: #e2e4e8;
+  --font-serif: 'MaruBuri', agchoijeongho-screen, 'Cormorant Garamond', 'Cinzel', "Noto Serif KR", serif;
+  --font-display-en: 'Cinzel', 'Cormorant Garamond', serif;
+  --font-serif-en: 'Cormorant Garamond', 'Cinzel', serif;
+  --font-mono: 'Cormorant Garamond', 'Cinzel', serif; /* 영문 명조(Serif) 서체 통일 */
+  --font-sans: -apple-system, BlinkMacSystemFont, "Pretendard", sans-serif;
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-smooth: cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html.lenis, html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+html {
+  scroll-behavior: smooth;
+  background-color: var(--bg-dark);
+  color: var(--text-main);
+  font-family: var(--font-serif);
+  font-weight: 400;
+  -webkit-font-smoothing: antialiased;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  overflow-x: hidden;
+  background-color: var(--bg-dark);
+  font-weight: 400;
+}
+
+body.is-loading {
+  overflow: hidden !important;
+}
+
+/* ============================================================================
+   INTRO FULLSCREEN ARCHITECTURAL BLUEPRINT LOADER
+   (방안 A: 사방 방위 제도선 -> 5개 공간 펜 스케치 윤곽선 -> 블랙 매스 채움 -> 로고 안착)
+   ============================================================================ */
+.site-loader {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  background: #fdfdfc; /* 맑고 서정적인 아카이벌 종이 질감 */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition:
+    opacity 1.1s cubic-bezier(0.22, 1, 0.36, 1),
+    visibility 1.1s cubic-bezier(0.22, 1, 0.36, 1);
+  pointer-events: all;
+  will-change: opacity, visibility;
+}
+
+/* 720:559 비율의 로고 무대 (Stage) */
+.loader-stage {
+  position: relative;
+  width: clamp(280px, 68vw, 420px);
+  aspect-ratio: 720 / 559;
+  overflow: visible;
+  will-change: transform, opacity;
+}
+
+/* 1. Architectural Blueprint SVG Layer (사방 방위 제도선 & 펜 스케치) */
+.loader-blueprint-svg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  overflow: visible;
+  z-index: 2;
+}
+
+/* 1-A. Axis Lines (사방 방위 자오선 및 위도선 - 자연스러운 시간차 펜 스트로크) */
+.axis-line {
+  stroke: rgba(0, 0, 0, 0.40);
+  stroke-width: 1.1px;
+  stroke-linecap: square;
+  stroke-dasharray: 100;
+  stroke-dashoffset: 100;
+}
+
+.axis-ns {
+  animation: draw-axis-line 0.70s cubic-bezier(0.25, 0.1, 0.25, 1) 0.10s forwards;
+}
+
+.axis-we {
+  animation: draw-axis-line 0.65s cubic-bezier(0.25, 0.1, 0.25, 1) 0.38s forwards;
+}
+
+.grid-sub-line {
+  stroke: rgba(0, 0, 0, 0.12);
+  stroke-width: 0.75px;
+  stroke-dasharray: 4 4;
+  opacity: 0;
+  animation: fade-sub-grid 0.55s ease 0.45s forwards;
+}
+
+.axis-crosshair {
+  stroke: rgba(0, 0, 0, 0.65);
+  stroke-width: 1.2px;
+  stroke-linecap: square;
+  opacity: 0;
+  animation: fade-crosshair 0.5s ease 0.50s forwards;
+}
+
+@keyframes draw-axis-line {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes fade-sub-grid {
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fade-crosshair {
+  to {
+    opacity: 1;
+  }
+}
+
+/* 1-B. Cardinal Labels (방위각 좌표 텍스트) */
+.bp-cardinal {
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  letter-spacing: 0.14em;
+  fill: rgba(0, 0, 0, 0.48);
+  opacity: 0;
+  animation: fade-bp-text 0.65s ease 0.60s forwards;
+}
+
+.box-inner-label {
+  font-family: var(--font-serif-en);
+  font-size: 14.5px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  fill: rgba(0, 0, 0, 0.52);
+  opacity: 0;
+  will-change: opacity, transform;
+}
+
+.box-inner-label.label-n {
+  animation: fade-box-label 0.45s ease 1.20s forwards;
+}
+.box-inner-label.label-e {
+  animation: fade-box-label 0.45s ease 1.50s forwards;
+}
+.box-inner-label.label-w {
+  animation: fade-box-label 0.45s ease 1.85s forwards;
+}
+.box-inner-label.label-s {
+  animation: fade-box-label 0.45s ease 2.20s forwards;
+}
+.box-inner-label.label-cape {
+  animation: fade-box-label 0.50s ease 2.60s forwards;
+}
+
+@keyframes fade-bp-text {
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fade-box-label {
+  0% {
+    opacity: 0;
+    transform: translateY(3px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 1-C. Quill Pen Sketch Contours (자연스러운 Tween 곡선과 시차를 둔 펜 드로잉) */
+.quill-outline {
+  stroke: #000000;
+  stroke-width: 1.35px;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  fill: none;
+  stroke-dasharray: 100;
+  stroke-dashoffset: 100;
+  filter: drop-shadow(0 0.5px 1px rgba(0, 0, 0, 0.15));
+}
+
+/* N -> E -> W -> S -> CAPE 순서로 유려하게 이어지는 펜 드로잉 시간차 */
+.box-trace-n {
+  animation: draw-quill-box 0.68s cubic-bezier(0.25, 0.1, 0.25, 1) 0.75s forwards;
+}
+.box-trace-e {
+  animation: draw-quill-box 0.66s cubic-bezier(0.25, 0.1, 0.25, 1) 1.10s forwards;
+}
+.box-trace-w {
+  animation: draw-quill-box 0.66s cubic-bezier(0.25, 0.1, 0.25, 1) 1.45s forwards;
+}
+.box-trace-s {
+  animation: draw-quill-box 0.66s cubic-bezier(0.25, 0.1, 0.25, 1) 1.80s forwards;
+}
+.box-trace-cape {
+  animation: draw-quill-box 0.78s cubic-bezier(0.25, 0.1, 0.25, 1) 2.15s forwards;
+}
+
+@keyframes draw-quill-box {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+/* 2. Solid Black Architectural Mass (각 박스 드로잉 완료에 맞춰 먹물이 스며들듯 순차 채움) */
+.logo-box {
+  position: absolute;
+  background: #000000;
+  opacity: 0;
+  will-change: opacity;
+  box-shadow: none;
+  z-index: 4;
+}
+
+/* Box N 채움: N선 드로잉 마무리에 연계 */
+.logo-box.box-n {
+  left: 11.111%;
+  top: 0%;
+  width: 22.222%;
+  height: 28.623%;
+  animation: fill-box-mass 0.48s cubic-bezier(0.25, 1, 0.5, 1) 1.32s forwards;
+}
+
+/* Box E 채움: E선 드로잉 마무리에 연계 */
+.logo-box.box-e {
+  left: 22.222%;
+  top: 28.623%;
+  width: 22.222%;
+  height: 28.623%;
+  animation: fill-box-mass 0.48s cubic-bezier(0.25, 1, 0.5, 1) 1.66s forwards;
+}
+
+/* Box W 채움: W선 드로잉 마무리에 연계 */
+.logo-box.box-w {
+  left: 0%;
+  top: 42.934%;
+  width: 22.222%;
+  height: 28.623%;
+  animation: fill-box-mass 0.48s cubic-bezier(0.25, 1, 0.5, 1) 2.00s forwards;
+}
+
+/* Box S 채움: S선 드로잉 마무리에 연계 */
+.logo-box.box-s {
+  left: 11.111%;
+  top: 71.556%;
+  width: 22.222%;
+  height: 28.623%;
+  animation: fill-box-mass 0.48s cubic-bezier(0.25, 1, 0.5, 1) 2.36s forwards;
+}
+
+/* Box CAPE 채움: CAPE선 드로잉 마무리에 연계 */
+.logo-box.box-cape {
+  left: 44.444%;
+  top: 71.556%;
+  width: 55.556%;
+  height: 28.623%;
+  animation: fill-box-mass 0.52s cubic-bezier(0.25, 1, 0.5, 1) 2.78s forwards;
+}
+
+@keyframes fill-box-mass {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+/* 3. NEWSCAPE Letters Overlay (로고 글자 안착) */
+.logo-letters-overlay {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 10;
+  pointer-events: none;
+  opacity: 0;
+  filter: blur(6px);
+  animation: logo-reveal-smooth 0.85s cubic-bezier(0.22, 1, 0.36, 1) 2.95s forwards;
+  will-change: opacity, filter, transform;
+}
+
+.logo-letters-img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: fill;
+  user-select: none;
+  filter: drop-shadow(0 4px 16px rgba(0, 0, 0, 0.08));
+}
+
+@keyframes logo-reveal-smooth {
+  0% {
+    opacity: 0;
+    filter: blur(6px);
+    transform: scale(0.99);
+  }
+  100% {
+    opacity: 1;
+    filter: blur(0px);
+    transform: scale(1.0);
+  }
+}
+
+/* 로딩 완료 시 은은한 시네마틱 디졸브 (Fade-out into Exhibition) */
+.site-loader.is-loaded {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.site-loader.is-loaded .loader-stage {
+  transform: scale(1.03);
+  filter: blur(8px);
+  opacity: 0;
+  transition:
+    transform 1.05s cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 0.95s cubic-bezier(0.22, 1, 0.36, 1),
+    filter 0.95s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* ============================================================================
+   LAYER 1: FULLSCREEN BACKGROUND VIDEO (NEWSCAPE Vimeo Stream)
+   ============================================================================ */
+.bg-video-layer {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  overflow: hidden;
+  background: #000000;
+}
+
+.video-container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100vw;
+  height: 56.25vw; /* 16:9 Aspect Ratio */
+  min-height: 100vh;
+  min-width: 177.77vh; /* 16:9 Aspect Ratio */
+}
+
+#bg-vimeo-iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+  display: block;
+  pointer-events: none;
+  /* 원본 시네마틱 컬러 영상 복원 (그레이스케일 제거, 텍스트 가독성을 위한 부드러운 대비 유지) */
+  filter: contrast(103%) brightness(0.92);
+}
+
+/* Cinematic Light / White Mist Scrim Overlays (블랙 대신 화이트톤 음영) */
+.video-scrim {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 50% 45%, rgba(255, 255, 255, 0.15) 0%, rgba(245, 247, 252, 0.45) 100%);
+  z-index: 2;
+}
+
+.video-vignette {
+  position: absolute;
+  inset: 0;
+  box-shadow: inset 0 0 130px rgba(255, 255, 255, 0.55);
+  z-index: 3;
+}
+
+/* ============================================================================
+   LAYER 2: MIDDLE BACKGROUND TYPOGRAPHY (길게 나열되어 스크롤과 함께 자연스럽게 흐르는 영문 스트림)
+   ============================================================================ */
+.bg-typography-layer {
+  position: fixed;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+/* Continuous Typography Track (화면 좌측에 고정된 뷰포트 레일) */
+.typo-stream-track {
+  position: fixed;
+  left: clamp(16px, 2.6vw, 42px);
+  top: 0;
+  height: 100vh;
+  display: flex;
+  align-items: flex-start;
+  pointer-events: none;
+  overflow: visible;
+}
+
+/* 세로 영문 텍스트 10px 우측에 세워지는 1px 수직 건축 그리드 라인 */
+.typo-stream-line {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: linear-gradient(
+    to bottom,
+    transparent 0%,
+    rgba(255, 255, 255, 0.22) 8%,
+    rgba(255, 255, 255, 0.28) 50%,
+    rgba(255, 255, 255, 0.22) 92%,
+    transparent 100%
+  );
+  pointer-events: none;
+  z-index: 2;
+  will-change: left;
+}
+
+/* 11개 챕터 영문 단어가 길게 나열된 스트림 리스트 */
+.typo-stream-list {
+  display: flex;
+  flex-direction: column;
+  transform: translateY(0px);
+  will-change: transform;
+}
+
+/* 각 챕터 단어가 위치하는 세로 슬롯 */
+.typo-item {
+  position: relative;
+  height: clamp(500px, 72vh, 800px);
+  width: clamp(100px, 14vw, 180px);
+  flex-shrink: 0;
+  opacity: 0.28;
+  transition: opacity 0.6s var(--ease-out);
+  will-change: opacity;
+}
+
+.typo-item.is-active {
+  opacity: 0.92;
+}
+
+.typo-item-inner {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+  transform: translate(-50%, -50%) rotate(-90deg);
+  transform-origin: center center;
+  white-space: nowrap;
+  user-select: none;
+}
+
+.typo-item-text {
+  font-family: var(--font-display-en);
+  font-size: clamp(4.6rem, 11vw, 13rem);
+  font-weight: 700;
+  letter-spacing: -0.009em;
+  line-height: 0.82;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.22);
+  -webkit-text-stroke: 0 !important;
+  white-space: nowrap;
+  transition: color 0.5s var(--ease-out), text-shadow 0.5s var(--ease-out);
+}
+
+.typo-item.is-active .typo-item-text {
+  color: rgba(255, 255, 255, 0.44);
+  text-shadow: 0 0 28px rgba(255, 255, 255, 0.22);
+}
+
+.typo-item-sub {
+  font-family: var(--font-serif-en);
+  font-size: clamp(9px, 0.9vw, 13px);
+  font-weight: 400;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.26);
+  white-space: nowrap;
+  margin-top: 4px;
+}
+
+/* Monumental Chapter Number Watermark (00 -> 10) */
+.typo-giant-number {
+  position: absolute;
+  right: 4vw;
+  bottom: 4vh;
+  font-family: var(--font-mono);
+  font-size: clamp(6rem, 16vw, 18rem);
+  font-weight: 900;
+  line-height: 0.8;
+  color: rgba(255, 255, 255, 0.035);
+  -webkit-text-stroke: 0 !important;
+  transition: opacity 0.5s ease;
+}
+
+/* Compass & Geographical Coordinates Watermark */
+.typo-compass-mark {
+  position: absolute;
+  left: 32px;
+  bottom: 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.25);
+  letter-spacing: 0.08em;
+}
+
+.compass-news {
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.4);
+}
+
+/* ============================================================================
+   QUILL 3D LINE-DRAWING COMPANION (고로 후지타 스타일 라인 드로잉 새)
+   ============================================================================ */
+.quill-bird-canvas {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 22;
+}
+
+/* ============================================================================
+   FLOATING HUD (Header, Chapter Counter & Soundscape Controls)
+   ============================================================================ */
+.site-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 30;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end; /* 좌측 로고 제거 후 우측 정렬 */
+  padding: 18px 28px;
+  background: transparent;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  pointer-events: none;
+}
+
+.site-header > * {
+  pointer-events: auto;
+}
+
+.brand-link {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+  color: #ffffff;
+}
+
+.header-logo {
+  height: clamp(26px, 3.2vw, 32px);
+  width: auto;
+  object-fit: contain;
+  filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.5));
+  transition: transform 0.25s var(--ease-out), filter 0.25s ease;
+  user-select: none;
+}
+
+.brand-link:hover .header-logo {
+  transform: scale(1.06);
+  filter: drop-shadow(0 0 12px rgba(255, 255, 255, 0.45));
+}
+
+.brand-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.brand-name {
+  font-family: var(--font-display-en);
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+}
+
+.brand-tag {
+  font-family: var(--font-serif-en);
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.55);
+  letter-spacing: 0.06em;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.btn-hud {
+  appearance: none;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  color: #ffffff;
+  padding: 7px 14px;
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  letter-spacing: 0.04em;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  transition: all 0.2s var(--ease-out);
+}
+
+.btn-hud:hover, .btn-hud.active {
+  background: #ffffff;
+  color: #000000;
+  border-color: #ffffff;
+}
+
+/* Sound Vector Icon (순백/모노크롬 미니멀 벡터 아이콘 - 빨간색 이모지 제거) */
+.sound-icon-wrap {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 14px;
+  height: 14px;
+}
+
+.sound-svg {
+  width: 13px;
+  height: 13px;
+  stroke: currentColor;
+}
+
+#btn-sound-toggle .icon-on {
+  display: none;
+}
+#btn-sound-toggle .icon-mute {
+  display: block;
+}
+
+#btn-sound-toggle.active .icon-on {
+  display: block;
+}
+#btn-sound-toggle.active .icon-mute {
+  display: none;
+}
+
+/* Chapter Jump Dropdown */
+.nav-jump-wrap {
+  position: relative;
+}
+
+.btn-jump-toggle {
+  appearance: none;
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  color: #ffffff;
+  padding: 7px 14px;
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-jump-toggle:hover {
+  border-color: rgba(255, 255, 255, 0.6);
+}
+
+.jump-dropdown {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  width: 290px;
+  background: rgba(14, 18, 27, 0.94);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  padding: 8px 0;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.7);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-8px);
+  transition: all 0.25s var(--ease-out);
+  max-height: 70vh;
+  overflow-y: auto;
+}
+
+.nav-jump-wrap.is-open .jump-dropdown {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.jump-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.jump-btn {
+  appearance: none;
+  border: none;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.75);
+  width: 100%;
+  text-align: left;
+  padding: 9px 16px;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  transition: all 0.18s;
+  font-family: var(--font-sans);
+}
+
+.jump-btn .j-num {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.55);
+  min-width: 20px;
+}
+
+.jump-btn:hover {
+  background: rgba(255, 255, 255, 0.12);
+  color: #ffffff;
+}
+
+/* Vertical Scroll Progress Bar (Right Edge) */
+.scroll-tracker {
+  position: fixed;
+  right: 28px;
+  left: auto;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 25;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.tracker-bar {
+  width: 2px;
+  height: 120px;
+  background: rgba(255, 255, 255, 0.15);
+  position: relative;
+  overflow: hidden;
+}
+
+.tracker-fill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 0%;
+  background: #ffffff;
+  transition: height 0.15s ease-out;
+}
+
+.tracker-num {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  color: rgba(255, 255, 255, 0.65);
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+}
+
+/* ============================================================================
+   LAYER 3: FOREGROUND SCROLLYTELLING STREAM (텍스트 & 이미지 포커싱 효과)
+   ============================================================================ */
+.story-stream {
+  position: relative;
+  z-index: 3;
+  width: 100%;
+  max-width: 780px;
+  margin: 0 auto;
+  padding: 0 24px 120px;
+}
+
+.story-section {
+  padding: 18vh 0 14vh;
+  position: relative;
+}
+
+.section-marker {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.18em;
+  color: rgba(255, 255, 255, 0.45);
+  margin-bottom: 2.2rem;
+  text-transform: uppercase;
+}
+
+/* ============================================================================
+   TEXT & IMAGE FOCUSING ENGINE
+   ============================================================================ */
+
+/* 1. 이미지 및 블록 요소 대기 상태 */
+.focus-item {
+  opacity: 0.22;
+  filter: blur(2.5px);
+  transform: translateY(28px);
+  transition:
+    opacity 0.75s var(--ease-out),
+    filter 0.75s var(--ease-out),
+    transform 0.75s var(--ease-out);
+  will-change: opacity, filter, transform;
+}
+
+/* 2. 이미지 및 블록 요소 포커스 상태 */
+.focus-item.is-focused {
+  opacity: 1.0;
+  filter: blur(0px);
+  transform: translateY(0);
+}
+
+/* 3. 이미지 및 블록 요소 통과 상태 */
+.focus-item.is-passed {
+  opacity: 0.75;
+  filter: blur(0px);
+  transform: translateY(0);
+}
+
+/* Editorial Story Paragraph (마루 부리 Regular 400) */
+.story-text {
+  font-family: var(--font-serif);
+  font-weight: 400; /* 마루 부리 기본 Regular(400) 두께 */
+  font-size: clamp(1.28rem, 2.7vw, 1.82rem);
+  line-height: 1.95;
+  letter-spacing: -0.015em;
+  margin: 0 0 4.2rem;
+  word-break: keep-all;
+  opacity: 1 !important;
+  filter: none !important;
+  transform: none !important;
+}
+
+/* ============================================================================
+   LINE-BY-LINE FOCUSING ("한단락이 아닌 한줄씩 포커싱되게 해줘")
+   ============================================================================ */
+.focus-line {
+  display: block;
+  margin-bottom: 0.35em;
+  opacity: 0.20;
+  filter: blur(2.5px);
+  transform: translateY(22px);
+  color: rgba(215, 222, 232, 0.24);
+  transition:
+    opacity 0.65s var(--ease-out),
+    filter 0.65s var(--ease-out),
+    transform 0.65s var(--ease-out),
+    color 0.55s var(--ease-out),
+    text-shadow 0.55s var(--ease-out);
+  will-change: opacity, filter, transform, color;
+}
+
+/* 스크롤해서 올라와 포커스된 줄: 100% 순백색으로 채워짐 */
+.focus-line.is-focused {
+  opacity: 1.0;
+  filter: blur(0px);
+  transform: translateY(0);
+  color: #ffffff !important;
+  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.35);
+}
+
+/* 스크롤을 지나쳐 위로 올라간 줄: 차분하고 깨끗한 화이트톤 유지 */
+.focus-line.is-passed {
+  opacity: 0.75;
+  filter: blur(0px);
+  transform: translateY(0);
+  color: rgba(255, 255, 255, 0.85);
+  text-shadow: none;
+}
+
+.story-text .highlight {
+  color: inherit;
+  font-weight: 500;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.4);
+  padding-bottom: 2px;
+}
+
+/* Story Figures & Images ("이미지가 너무 강하게 튀어나오지 않고 우아한 갤러리 톤으로") */
+.story-figure {
+  margin: 0 auto 5rem;
+  max-width: 720px;
+  cursor: pointer;
+  perspective: 1200px;
+  will-change: transform, opacity, filter;
+  transition:
+    opacity 0.9s var(--ease-out),
+    filter 0.9s var(--ease-out),
+    transform 0.9s var(--ease-out);
+}
+
+/* 대기 상태: 부드러운 안개 속 대기 (너무 강하게 튀지 않음) */
+.story-figure:not(.is-focused) {
+  opacity: 0.32;
+  filter: blur(3px) brightness(0.72) saturate(0.85);
+  transform: translateY(24px) scale(0.98);
+}
+
+/* 포커스 상태: 선명하고 온화하게 시네마틱 톤으로 전환 */
+.story-figure.is-focused {
+  opacity: 1.0;
+  filter: blur(0px) brightness(1.0) saturate(1.02);
+  transform: translateY(0) scale(1.0);
+}
+
+.story-figure.is-passed {
+  opacity: 0.78;
+  filter: blur(0px) brightness(0.95);
+  transform: translateY(0) scale(1.0);
+}
+
+.image-wrap {
+  position: relative;
+  width: 100%;
+  border-radius: 1px;
+  background: rgba(255, 255, 255, 0.05);
+  border: none;
+  overflow: visible;
+  box-shadow: 0 12px 32px -8px rgba(0, 0, 0, 0.35);
+  transition: transform 0.4s var(--ease-out), box-shadow 0.4s var(--ease-out);
+  transform-style: preserve-3d;
+}
+
+/* Inner frame treatment */
+.image-wrap::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.06);
+  border-radius: inherit;
+}
+
+/* Dynamic optical glass sheen (호버 시 은은한 유리 반사광) */
+.image-wrap::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  border-radius: inherit;
+  background: linear-gradient(
+    115deg,
+    transparent 35%,
+    rgba(255, 255, 255, 0.10) 50%,
+    transparent 65%
+  );
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.story-figure:hover .image-wrap::after {
+  opacity: 1;
+}
+
+.story-figure:hover .image-wrap {
+  box-shadow: 0 18px 40px -6px rgba(0, 0, 0, 0.4), 0 0 28px rgba(255, 255, 255, 0.08);
+}
+
+/* ============================================================================
+   QUILL SCRATCH PEN IMAGE FRAME (새와 잎, 가지와 동일한 펜 드로잉 테두리)
+   ============================================================================ */
+.quill-pen-frame {
+  position: absolute;
+  top: -14px;
+  left: -14px;
+  width: calc(100% + 28px);
+  height: calc(100% + 28px);
+  pointer-events: none;
+  z-index: 6;
+  overflow: visible;
+  filter: url(#quill-stroke-filter);
+  opacity: 0.38;
+  transition: opacity 0.5s var(--ease-out), filter 0.5s ease;
+}
+
+/* 스크롤 포커스 시: 순백의 펜 잉크가 또렷하게 빛남 */
+.story-figure.is-focused .quill-pen-frame {
+  opacity: 0.94;
+  filter: url(#quill-stroke-filter) drop-shadow(0 0 2.5px rgba(255, 255, 255, 0.45));
+}
+
+/* 마우스 호버 시: 섬세한 펜 라인이 밝게 반응 */
+.story-figure:hover .quill-pen-frame {
+  opacity: 1.0;
+  filter: url(#quill-stroke-filter) drop-shadow(0 0 4.5px rgba(255, 255, 255, 0.7));
+}
+
+/* 팝업 모달 이미지의 스크래치 펜 테두리 */
+.dialog-media-box {
+  position: relative;
+  overflow: visible;
+}
+
+.dialog-media-box .quill-pen-frame {
+  opacity: 0.95;
+  filter: url(#quill-stroke-filter) drop-shadow(0 0 3px rgba(255, 255, 255, 0.5));
+}
+
+.story-figure img {
+  width: 100%;
+  height: auto;
+  display: block;
+  transition: transform 0.7s var(--ease-out);
+}
+
+.story-figure:hover img {
+  transform: scale(1.02);
+}
+
+figcaption {
+  font-family: var(--font-serif-en);
+  font-size: 12px;
+  letter-spacing: 0.05em;
+  color: rgba(255, 255, 255, 0.55);
+  margin-top: 12px;
+  padding-left: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  transition: color 0.3s ease;
+}
+
+.story-figure:hover figcaption {
+  color: rgba(255, 255, 255, 0.85);
+}
+
+/* 00. Hero Section */
+.hero-section {
+  min-height: 82vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding-top: 16vh;
+}
+
+.hero-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.hero-tagline {
+  font-family: var(--font-serif-en);
+  font-weight: 400;
+  font-size: clamp(1.65rem, 3.8vw, 2.75rem);
+  line-height: 1.42;
+  letter-spacing: 0.025em;
+  color: #ffffff;
+  opacity: 1 !important;
+  filter: none !important;
+  transform: none !important;
+  margin: 0 0 3.8rem;
+  text-shadow: 0 2px 14px rgba(0, 0, 0, 0.35);
+}
+
+.scroll-prompt {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  color: rgba(255, 255, 255, 0.65);
+  animation: prompt-bounce 2.2s infinite ease-in-out;
+}
+
+.prompt-arrow {
+  display: inline-block;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 13px;
+  line-height: 1;
+  opacity: 0.75;
+}
+
+.prompt-text {
+  font-family: var(--font-display-en);
+  font-size: clamp(10px, 0.85vw, 12px);
+  font-weight: 500;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.72);
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.3);
+}
+
+@keyframes prompt-bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(8px); }
+}
+
+/* Epilogue Statement */
+.statement-lead {
+  font-size: clamp(1.4rem, 3vw, 2.1rem);
+  line-height: 1.8;
+  font-weight: 500;
+  color: #ffffff;
+}
+
+.signature {
+  font-family: var(--font-serif);
+  font-size: 1.25rem;
+  color: rgba(255, 255, 255, 0.8);
+  margin-top: 2rem;
+}
+
+/* ============================================================================
+   10. VISIT & INFORMATION SECTION
+   ============================================================================ */
+.info-card {
+  background: rgba(16, 20, 30, 0.78);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  padding: clamp(2rem, 5vw, 3.5rem);
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.20);
+}
+
+.info-title {
+  font-size: clamp(1.6rem, 3.2vw, 2.2rem);
+  margin: 0 0 2rem;
+  color: #ffffff;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.14);
+  padding-bottom: 1rem;
+}
+
+.info-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2.2rem;
+  margin-bottom: 3rem;
+}
+
+.info-col {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.info-label {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  color: var(--accent-cyan);
+  margin: 0;
+  text-transform: uppercase;
+}
+
+.info-val {
+  font-family: var(--font-sans);
+  font-size: 14px;
+  line-height: 1.65;
+  color: #d1d7e0;
+  margin: 0;
+}
+
+.info-val a {
+  color: #ffffff;
+  text-decoration: underline;
+}
+
+.info-sub {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.5);
+  display: block;
+  margin-top: 4px;
+}
+
+.btn-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.btn-link {
+  appearance: none;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  background: rgba(255, 255, 255, 0.06);
+  color: #ffffff;
+  text-decoration: none;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  padding: 6px 12px;
+  cursor: pointer;
+  transition: all 0.2s var(--ease-out);
+}
+
+.btn-link:hover {
+  background: #ffffff;
+  color: #000000;
+  border-color: #ffffff;
+}
+
+.btn-link.accent {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.45);
+  color: #ffffff;
+}
+
+.btn-link.accent:hover {
+  background: #ffffff;
+  color: #000000;
+  border-color: #ffffff;
+}
+
+/* Credits Block */
+.credits-block {
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  padding-top: 2rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.5rem;
+}
+
+.credit-item {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.cr-role {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--accent-cyan);
+  letter-spacing: 0.08em;
+}
+
+.cr-name {
+  font-family: var(--font-sans);
+  font-size: 13.5px;
+  color: #e6edf3;
+}
+
+/* ============================================================================
+   LIGHTBOX DIALOG (Modern Web Guidance Compliant)
+   ============================================================================ */
+.photo-dialog {
+  background: transparent;
+  border: none;
+  padding: 0;
+  max-width: min(1080px, 94vw);
+  max-height: 92vh;
+  outline: none;
+  overscroll-behavior: contain;
+}
+
+.photo-dialog:modal {
+  overscroll-behavior: contain;
+}
+
+.photo-dialog::backdrop {
+  background: rgba(6, 8, 14, 0.88);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  overscroll-behavior: contain;
+}
+
+.dialog-inner {
+  background: rgba(14, 18, 28, 0.95);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  box-shadow: 0 32px 90px rgba(0, 0, 0, 0.8);
+}
+
+.dialog-media-box {
+  max-height: 78vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #000000;
+  overflow: hidden;
+  cursor: pointer;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.dialog-media-box img {
+  max-width: 100%;
+  max-height: 78vh;
+  object-fit: contain;
+  display: block;
+  cursor: pointer;
+  transition: opacity 0.2s var(--ease-out);
+}
+
+.dialog-media-box:hover img {
+  opacity: 0.96;
+}
+
+.dialog-info-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  padding-top: 10px;
+}
+
+.dialog-caption {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: #e6edf3;
+}
+
+.btn-close-dialog {
+  appearance: none;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  background: rgba(255, 255, 255, 0.08);
+  color: #ffffff;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  padding: 6px 14px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-close-dialog:hover {
+  background: #ffffff;
+  color: #000000;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .site-header {
+    padding: 12px 18px;
+  }
+  .scroll-tracker {
+    display: none;
+  }
+  .story-stream {
+    padding: 0 18px 80px;
+  }
+  .story-section {
+    padding: 12vh 0 8vh;
+  }
+  .typo-compass-mark {
+    display: none;
+  }
+}
