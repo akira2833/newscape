@@ -464,15 +464,15 @@ body.is-loading {
   filter: contrast(103%) brightness(0.92);
 }
 
-/* Pale Ivory Film Veil (옅은 아이보리색 70% 투명도 레이어 - 동영상이 보일듯 말듯 은은한 감상) */
+/* Pale Ivory Film Veil (배경 투명도 1단계 축소: 78% 은은한 아이보리 필름 레이어 - 동영상이 보일듯 말듯 은은한 감상) */
 .video-scrim {
   position: absolute;
   inset: 0;
-  background-color: rgba(247, 245, 240, 0.70);
+  background-color: rgba(247, 245, 240, 0.78);
   background: radial-gradient(
     circle at 50% 48%,
-    rgba(248, 246, 242, 0.68) 0%,
-    rgba(245, 242, 235, 0.72) 100%
+    rgba(248, 246, 242, 0.76) 0%,
+    rgba(244, 240, 232, 0.82) 100%
   );
   z-index: 2;
 }
@@ -480,7 +480,7 @@ body.is-loading {
 .video-vignette {
   position: absolute;
   inset: 0;
-  box-shadow: inset 0 0 160px rgba(235, 230, 218, 0.50);
+  box-shadow: inset 0 0 160px rgba(232, 226, 214, 0.55);
   z-index: 3;
 }
 
@@ -980,7 +980,7 @@ a.btn-hud-book:hover,
   opacity: 1 !important;
   filter: none !important;
   transform: none !important;
-  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.45);
+  text-shadow: none !important; /* CRITICAL: Prevent parent shadow from exposing un-focused child lines */
 }
 
 /* ============================================================================
@@ -990,17 +990,17 @@ a.btn-hud-book:hover,
   display: block;
   margin-bottom: 0.35em;
   opacity: 0.20;
-  transform: translateY(12px);
-  color: rgba(215, 222, 232, 0.24);
-  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.30);
+  transform: translateY(10px);
+  color: rgba(245, 245, 248, 0.30);
+  text-shadow: none;
   transition:
-    opacity 0.5s var(--ease-out),
-    transform 0.5s var(--ease-out),
+    opacity 0.45s var(--ease-out),
+    transform 0.45s var(--ease-out),
     color 0.45s var(--ease-out),
     text-shadow 0.45s var(--ease-out);
 }
 
-/* 스크롤해서 올라와 포커스된 줄: 1단계 낮춰 자연스럽고 또렷한 그림자 */
+/* 스크롤해서 올라와 포커스된 줄: 100% 순백색 + 또렷한 입체 그림자로 시선 집중 */
 .focus-line.is-focused {
   opacity: 1.0;
   transform: translateY(0);
@@ -1010,12 +1010,12 @@ a.btn-hud-book:hover,
     0 1px 3px rgba(0, 0, 0, 0.65);
 }
 
-/* 스크롤을 지나쳐 위로 올라간 줄: 차분한 화이트톤 + 은은한 그림자 */
+/* 스크롤을 지나쳐 위로 올라간 줄: 차분하게 반투명 페이드 (읽은 줄 표시) */
 .focus-line.is-passed {
-  opacity: 0.75;
+  opacity: 0.45;
   transform: translateY(0);
-  color: rgba(255, 255, 255, 0.85);
-  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.45);
+  color: rgba(255, 255, 255, 0.65);
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.35);
 }
 
 .story-text .highlight {

@@ -161,10 +161,13 @@ function initFocusItems() {
 
 initFocusItems();
 
+let lastMeasuredDocHeight = 0;
+
 // Cache layout positions in document coordinates to prevent getBoundingClientRect in scroll loop
 function measureLayoutPositions() {
   const scrollY = window.scrollY || window.pageYOffset;
   const viewportHeight = window.innerHeight;
+  lastMeasuredDocHeight = document.documentElement.scrollHeight;
 
   // 1. Sections cache
   cachedSecMids = sections.map(sec => {
@@ -186,9 +189,10 @@ function measureLayoutPositions() {
   cachedFocusItems = focusItems.map(item => {
     const rect = item.getBoundingClientRect();
     const isLine = item.classList.contains('focus-line');
-    const tolerance = isLine ? 55 : (viewportHeight * 0.28);
+    const tolerance = isLine ? 35 : (viewportHeight * 0.28);
     return {
       element: item,
+      isLine: isLine,
       docCenter: rect.top + scrollY + rect.height * 0.5,
       tolerance: tolerance,
       currentState: ''
@@ -248,6 +252,11 @@ function handleScroll() {
   const docHeight = document.documentElement.scrollHeight;
   const maxScroll = Math.max(docHeight - viewportHeight, 1);
 
+  // Auto-sync layout positions if document height changed (e.g. lazy-loaded images, fonts)
+  if (Math.abs(docHeight - lastMeasuredDocHeight) > 10) {
+    measureLayoutPositions();
+  }
+
   // 1. Overall Progress Bar
   const scrollRatio = Math.min(Math.max(scrollY / maxScroll, 0), 1);
   if (trackerFill) {
@@ -299,24 +308,64 @@ function handleScroll() {
     }
   }
 
-  // 3. Focal Line Calculation (Zero DOM Read: 캐시된 docCenter - scrollY 연산)
+  // 3. Focal Line Calculation (한줄씩 명확한 라인 스포트라이트 & 피규어 포커싱)
   const focalLine = viewportHeight * 0.44;
-  let closestItem = null;
-  let minDistance = Infinity;
+  let closestLine = null;
+  let minLineDistance = Infinity;
 
+  // 3-A. Find closest line to reading focal line & update figures/cards
   for (let i = 0; i < cachedFocusItems.length; i++) {
     const item = cachedFocusItems[i];
     const itemCenter = item.docCenter - scrollY;
-    const distToFocalLine = Math.abs(itemCenter - focalLine);
 
+    if (item.isLine) {
+      const dist = Math.abs(itemCenter - focalLine);
+      if (dist < minLineDistance && dist < (viewportHeight * 0.38)) {
+        minLineDistance = dist;
+        closestLine = item;
+      }
+    } else {
+      // Story Figures & Info Cards
+      const distToFocalLine = Math.abs(itemCenter - focalLine);
+      let nextState = 'none';
+      if (distToFocalLine < item.tolerance) {
+        nextState = 'focused';
+      } else if (itemCenter < focalLine - item.tolerance) {
+        nextState = 'passed';
+      }
+
+      if (item.currentState !== nextState) {
+        item.currentState = nextState;
+        if (nextState === 'focused') {
+          item.element.classList.add('is-focused');
+          item.element.classList.remove('is-passed');
+        } else if (nextState === 'passed') {
+          item.element.classList.remove('is-focused');
+          item.element.classList.add('is-passed');
+        } else {
+          item.element.classList.remove('is-focused');
+          item.element.classList.remove('is-passed');
+        }
+      }
+    }
+  }
+
+  // 3-B. Update lines with strict single-line focus spotlight
+  for (let i = 0; i < cachedFocusItems.length; i++) {
+    const item = cachedFocusItems[i];
+    if (!item.isLine) continue;
+
+    const itemCenter = item.docCenter - scrollY;
     let nextState = 'none';
-    if (distToFocalLine < item.tolerance) {
+
+    if (closestLine && item === closestLine) {
       nextState = 'focused';
-    } else if (itemCenter < focalLine - item.tolerance) {
+    } else if (itemCenter < focalLine - 20) {
       nextState = 'passed';
+    } else {
+      nextState = 'none';
     }
 
-    // 상태가 실제로 바뀔 때만 DOM 클래스 조작 (불필요한 스타일 무효화 방지)
     if (item.currentState !== nextState) {
       item.currentState = nextState;
       if (nextState === 'focused') {
@@ -330,18 +379,6 @@ function handleScroll() {
         item.element.classList.remove('is-passed');
       }
     }
-
-    if (distToFocalLine < minDistance) {
-      minDistance = distToFocalLine;
-      closestItem = item;
-    }
-  }
-
-  // Guarantee at least the closest line/item is focused
-  if (closestItem && closestItem.currentState !== 'focused') {
-    closestItem.currentState = 'focused';
-    closestItem.element.classList.add('is-focused');
-    closestItem.element.classList.remove('is-passed');
   }
 
   // 4. Determine Active Section (캐시 활용)
@@ -1756,6 +1793,8 @@ function initVideoLoadingScreen() {
     // Smooth cinematic dissolve
     loader.classList.add('is-loaded');
     document.body.classList.remove('is-loading');
+    measureLayoutPositions();
+    handleScroll();
 
     // Resume Lenis smooth scroll once exhibition appears
     if (lenis) {
@@ -1821,6 +1860,33 @@ window.addEventListener('load', () => {
   measureLayoutPositions();
   handleScroll();
 });
+
+// Dynamic Layout Observers: 보정 레이아웃 옵저버 (이미지 로딩, 폰트 렌더링 시 오차 즉시 자동 보정)
+if (typeof ResizeObserver !== 'undefined') {
+  const layoutObserver = new ResizeObserver(() => {
+    measureLayoutPositions();
+    handleScroll();
+  });
+  if (document.body) {
+    layoutObserver.observe(document.body);
+  }
+}
+
+document.querySelectorAll('img').forEach(img => {
+  if (!img.complete) {
+    img.addEventListener('load', () => {
+      measureLayoutPositions();
+      handleScroll();
+    });
+  }
+});
+
+if (document.fonts) {
+  document.fonts.ready.then(() => {
+    measureLayoutPositions();
+    handleScroll();
+  });
+}
 
 // Run once immediately
 initVideoLoadingScreen();
