@@ -648,7 +648,7 @@ body.is-loading {
 }
 
 /* ============================================================================
-   CELESTIAL ATMOSPHERIC LAYER (6번 탭 지난 후 구름 & 8번 탭 지난 후 달)
+   CELESTIAL ATMOSPHERIC LAYER (5번 탭 지난 후 펜화 구름 & 7번 탭 지난 후 펜화 달)
    ============================================================================ */
 .sky-celestial-layer {
   position: fixed;
@@ -658,17 +658,18 @@ body.is-loading {
   overflow: hidden;
 }
 
-/* 1. 최상단 서정적 구름 (6번 탭을 지나면 최상단에 부드럽게 유영하며 등장) */
+/* 1. 최상단 펜 스케치 곡선 구름 (5번 탭을 지나면 최상단에 부드럽게 유영하며 등장) */
 .sky-clouds {
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
-  height: clamp(130px, 19vh, 200px);
+  height: clamp(140px, 20vh, 210px);
   opacity: 0;
   transform: translateY(-24px);
   transition: opacity 1.5s cubic-bezier(0.22, 1, 0.36, 1), transform 1.5s cubic-bezier(0.22, 1, 0.36, 1);
   will-change: opacity, transform;
+  filter: drop-shadow(0 2px 10px rgba(0, 0, 0, 0.03));
 }
 
 .sky-clouds.is-active {
@@ -696,7 +697,7 @@ body.is-loading {
 
 .cloud-drift-track.track-b {
   animation: cloud-float-b 52s ease-in-out infinite alternate;
-  opacity: 0.82;
+  opacity: 0.85;
 }
 
 @keyframes cloud-float-a {
@@ -717,13 +718,13 @@ body.is-loading {
   }
 }
 
-/* 2. 고요한 밤의 건축적 달 (8번 탭을 지나면 상공 우측에 고요하게 떠오름) */
+/* 2. 고요한 밤의 펜 드로잉 달 (7번 탭을 지나면 상공 우측에 고요하게 떠오름) */
 .sky-moon {
   position: absolute;
   top: clamp(68px, 11vh, 125px);
   right: clamp(20px, 6vw, 110px);
-  width: clamp(68px, 8.5vw, 100px);
-  height: clamp(68px, 8.5vw, 100px);
+  width: clamp(75px, 9.5vw, 110px);
+  height: clamp(75px, 9.5vw, 110px);
   opacity: 0;
   transform: translateY(32px) scale(0.92);
   transition: opacity 1.6s cubic-bezier(0.22, 1, 0.36, 1), transform 1.6s cubic-bezier(0.22, 1, 0.36, 1);
@@ -737,12 +738,12 @@ body.is-loading {
 
 .moon-halo {
   position: absolute;
-  inset: -22%;
+  inset: -25%;
   border-radius: 50%;
   background: radial-gradient(
     circle,
-    rgba(255, 250, 235, 0.75) 0%,
-    rgba(245, 238, 220, 0.35) 45%,
+    rgba(255, 252, 240, 0.70) 0%,
+    rgba(245, 238, 220, 0.30) 45%,
     rgba(235, 228, 210, 0) 75%
   );
   filter: blur(14px);
@@ -765,7 +766,23 @@ body.is-loading {
   width: 100%;
   height: 100%;
   display: block;
-  filter: drop-shadow(0 6px 18px rgba(0, 0, 0, 0.08));
+  filter: drop-shadow(0 4px 16px rgba(0, 0, 0, 0.07));
+}
+
+.sky-moon.is-active .moon-svg {
+  animation: moon-float-sway 14s ease-in-out infinite alternate;
+}
+
+@keyframes moon-float-sway {
+  0% {
+    transform: translateY(0) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-5px) rotate(1.2deg);
+  }
+  100% {
+    transform: translateY(4px) rotate(-1deg);
+  }
 }
 
 /* ============================================================================

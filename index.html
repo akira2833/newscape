@@ -15,7 +15,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700;800;900&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Noto+Serif+KR:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="./style.css?v=3.6">
+  <link rel="stylesheet" href="./style.css?v=3.7">
 </head>
 <body class="newscape-site is-loading">
 
@@ -203,62 +203,113 @@
   </div>
 
   <!-- ========================================================================
-       CELESTIAL ATMOSPHERIC LAYER (6번 탭 지난 후 구름 & 8번 탭 지난 후 달)
+       CELESTIAL ATMOSPHERIC LAYER (6번 탭 지난 후 펜 드로잉 구름 & 8번 탭 지난 후 펜 드로잉 달)
        ======================================================================== -->
   <div class="sky-celestial-layer" id="sky-celestial-layer" aria-hidden="true">
-    <!-- Top Drifting Clouds (6번 탭을 지나면 최상단에 유영하는 서정적 구름) -->
+    <!-- Top Drifting Quill Clouds (6번 탭을 지나면 최상단에 유영하는 펜 스케치 곡선 구름) -->
     <div class="sky-clouds" id="sky-clouds">
       <div class="cloud-drift-track track-a">
-        <svg class="cloud-svg" viewBox="0 0 1200 160" preserveAspectRatio="none">
+        <svg class="cloud-svg" viewBox="0 0 1400 170" preserveAspectRatio="none">
           <defs>
-            <linearGradient id="cloud-grad-1" x1="0%" y1="0%" x2="0%" y2="100%">
-              <stop offset="0%" stop-color="#ffffff" stop-opacity="0.65"/>
-              <stop offset="60%" stop-color="#f5f2ea" stop-opacity="0.35"/>
-              <stop offset="100%" stop-color="#ede7db" stop-opacity="0"/>
+            <linearGradient id="cloud-paper-wash-1" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" stop-color="#ffffff" stop-opacity="0.72"/>
+              <stop offset="55%" stop-color="#f8f5ee" stop-opacity="0.45"/>
+              <stop offset="100%" stop-color="#eee7db" stop-opacity="0"/>
             </linearGradient>
           </defs>
-          <path d="M 0 0 L 1200 0 L 1200 65 Q 1120 110 1020 75 Q 930 40 840 85 Q 730 135 600 80 Q 480 30 380 90 Q 280 145 160 85 Q 70 45 0 80 Z" fill="url(#cloud-grad-1)"/>
-          <path d="M 40 60 Q 140 125 280 80 Q 420 35 560 95 Q 680 140 800 70 Q 940 10 1060 85 Q 1130 110 1200 75" fill="none" stroke="rgba(17,17,17,0.14)" stroke-width="1.2" stroke-linecap="round" stroke-dasharray="8 6"/>
-          <path d="M 0 45 Q 100 20 220 55 Q 360 95 480 40 Q 620 -5 740 60 Q 880 110 1000 45 Q 1100 5 1200 35" fill="none" stroke="rgba(17,17,17,0.10)" stroke-width="1.0" stroke-linecap="round"/>
+          <!-- Soft Paper Tint Base -->
+          <path d="M -60 25 C 40 10, 100 45, 160 30 C 230 10, 310 15, 370 38 C 450 8, 540 5, 620 32 C 700 8, 790 12, 870 36 C 960 10, 1060 16, 1140 38 C 1220 12, 1310 20, 1390 32 C 1430 38, 1470 30, 1500 25 L 1500 0 L -60 0 Z" fill="url(#cloud-paper-wash-1)"/>
+          
+          <!-- Primary Quill Pen Contour (구부러진 펜화 윤곽선) -->
+          <path d="M -40 28 C 40 12, 100 44, 160 28 C 230 10, 310 16, 370 38 C 450 10, 540 6, 620 32 C 700 8, 790 12, 870 36 C 960 10, 1060 16, 1140 38 C 1220 12, 1310 20, 1440 30" fill="none" stroke="#111111" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round" opacity="0.65"/>
+          
+          <!-- Secondary Overlapping Jitter Line (손맛을 살린 겹선 스케치) -->
+          <path d="M -20 22 C 50 18, 95 40, 155 34 C 225 16, 300 22, 365 34 C 445 16, 535 12, 615 28 C 695 14, 785 18, 865 32 C 955 16, 1055 22, 1135 34 C 1215 18, 1305 24, 1420 28" fill="none" stroke="#111111" stroke-width="0.9" stroke-linecap="round" stroke-linejoin="round" opacity="0.38"/>
+          
+          <!-- Curved Internal Billow Arcs (구름 안쪽으로 굽이치는 펜선) -->
+          <path d="M 120 38 C 160 52, 210 46, 240 32 M 200 35 C 230 48, 270 45, 300 36" fill="none" stroke="#111111" stroke-width="1.1" stroke-linecap="round" opacity="0.50"/>
+          <path d="M 400 35 C 440 50, 490 48, 530 35 M 480 34 C 520 46, 560 42, 600 30" fill="none" stroke="#111111" stroke-width="1.1" stroke-linecap="round" opacity="0.50"/>
+          <path d="M 660 32 C 710 48, 770 46, 810 32 M 760 32 C 800 46, 840 42, 880 34" fill="none" stroke="#111111" stroke-width="1.1" stroke-linecap="round" opacity="0.50"/>
+          <path d="M 940 34 C 990 52, 1050 48, 1090 32 M 1040 33 C 1080 46, 1120 42, 1160 35" fill="none" stroke="#111111" stroke-width="1.1" stroke-linecap="round" opacity="0.50"/>
+
+          <!-- Curling Cloud Spirals & Wind Swirls (구부러지며 소용돌이치는 펜선) -->
+          <path d="M 175 42 C 190 50, 208 48, 212 38 C 215 28, 202 22, 192 26 C 184 30, 186 38, 194 40" fill="none" stroke="#111111" stroke-width="1.0" stroke-linecap="round" opacity="0.45"/>
+          <path d="M 465 40 C 480 48, 498 46, 502 36 C 505 26, 492 20, 482 24 C 474 28, 476 36, 484 38" fill="none" stroke="#111111" stroke-width="1.0" stroke-linecap="round" opacity="0.45"/>
+          <path d="M 735 38 C 750 46, 768 44, 772 34 C 775 24, 762 18, 752 22 C 744 26, 746 34, 754 36" fill="none" stroke="#111111" stroke-width="1.0" stroke-linecap="round" opacity="0.45"/>
+          <path d="M 1015 42 C 1030 50, 1048 48, 1052 38 C 1055 28, 1042 22, 1032 26 C 1024 30, 1026 38, 1034 40" fill="none" stroke="#111111" stroke-width="1.0" stroke-linecap="round" opacity="0.45"/>
+
+          <!-- Curved Hatching on Undersides (펜화 굽은 빗금 음영) -->
+          <path d="
+            M 148 44 C 153 52, 156 58, 158 64
+            M 160 42 C 165 50, 168 56, 170 62
+            M 172 40 C 177 48, 180 54, 182 60
+            M 425 42 C 430 50, 433 56, 435 62
+            M 437 40 C 442 48, 445 54, 447 60
+            M 449 38 C 454 46, 457 52, 459 58
+            M 690 40 C 695 48, 698 54, 700 60
+            M 702 38 C 707 46, 710 52, 712 58
+            M 714 36 C 719 44, 722 50, 724 56
+            M 965 42 C 970 50, 973 56, 975 62
+            M 977 40 C 982 48, 985 54, 987 60
+            M 989 38 C 994 46, 997 52, 999 58
+          " fill="none" stroke="#111111" stroke-width="0.85" stroke-linecap="round" opacity="0.28"/>
         </svg>
       </div>
+
       <div class="cloud-drift-track track-b">
-        <svg class="cloud-svg" viewBox="0 0 1200 160" preserveAspectRatio="none">
-          <defs>
-            <linearGradient id="cloud-grad-2" x1="0%" y1="0%" x2="0%" y2="100%">
-              <stop offset="0%" stop-color="#ffffff" stop-opacity="0.45"/>
-              <stop offset="70%" stop-color="#f7f5ed" stop-opacity="0.20"/>
-              <stop offset="100%" stop-color="#ede7db" stop-opacity="0"/>
-            </linearGradient>
-          </defs>
-          <path d="M 0 0 L 1200 0 L 1200 45 Q 1100 85 980 50 Q 860 15 760 70 Q 640 120 500 60 Q 380 10 260 65 Q 140 115 0 50 Z" fill="url(#cloud-grad-2)"/>
-          <path d="M 120 40 Q 260 90 400 45 Q 540 5 660 65 Q 820 125 960 55 Q 1080 -5 1200 45" fill="none" stroke="rgba(17,17,17,0.12)" stroke-width="1.1" stroke-linecap="round"/>
+        <svg class="cloud-svg" viewBox="0 0 1400 170" preserveAspectRatio="none">
+          <!-- Flowing Curving Wind Trails & Waving Vapor Wisps (공중으로 흩날리는 굽은 펜 바람줄기) -->
+          <path d="M 40 70 C 130 86, 210 64, 290 82 C 340 94, 380 84, 440 74" fill="none" stroke="#111111" stroke-width="1.15" stroke-linecap="round" opacity="0.45"/>
+          <path d="M 270 82 C 300 95, 330 92, 345 80 C 352 70, 340 62, 328 66 C 318 70, 320 80, 330 84" fill="none" stroke="#111111" stroke-width="0.9" stroke-linecap="round" opacity="0.38"/>
+          
+          <path d="M 500 66 C 580 82, 660 62, 740 78 C 800 88, 850 78, 910 66" fill="none" stroke="#111111" stroke-width="1.15" stroke-linecap="round" opacity="0.45"/>
+          <path d="M 720 78 C 750 92, 780 88, 795 76 C 802 66, 790 58, 778 62 C 768 66, 770 76, 780 80" fill="none" stroke="#111111" stroke-width="0.9" stroke-linecap="round" opacity="0.38"/>
+
+          <path d="M 960 68 C 1040 84, 1130 64, 1210 80 C 1270 90, 1330 80, 1400 68" fill="none" stroke="#111111" stroke-width="1.15" stroke-linecap="round" opacity="0.45"/>
+          <path d="M 1190 80 C 1220 94, 1250 90, 1265 78 C 1272 68, 1260 60, 1248 64 C 1238 68, 1240 78, 1250 82" fill="none" stroke="#111111" stroke-width="0.9" stroke-linecap="round" opacity="0.38"/>
         </svg>
       </div>
     </div>
 
-    <!-- Radiant Architectural Moon (8번 탭을 지나면 고요하게 떠오르는 달) -->
+    <!-- Hand-Drawn Quill Pen Moon (8번 탭을 지나면 고요하게 떠오르는 펜 스케치 달) -->
     <div class="sky-moon" id="sky-moon">
       <div class="moon-halo"></div>
-      <svg class="moon-svg" viewBox="0 0 100 100">
-        <defs>
-          <radialGradient id="moon-body-grad" cx="42%" cy="40%" r="58%">
-            <stop offset="0%" stop-color="#ffffff" stop-opacity="0.95"/>
-            <stop offset="55%" stop-color="#faf6ec" stop-opacity="0.88"/>
-            <stop offset="85%" stop-color="#eee6d3" stop-opacity="0.75"/>
-            <stop offset="100%" stop-color="#dcd2ba" stop-opacity="0.55"/>
-          </radialGradient>
-          <radialGradient id="crater-grad" cx="45%" cy="45%" r="50%">
-            <stop offset="0%" stop-color="rgba(80,75,65,0.08)"/>
-            <stop offset="100%" stop-color="transparent"/>
-          </radialGradient>
-        </defs>
-        <circle cx="50" cy="50" r="42" fill="url(#moon-body-grad)" stroke="rgba(17,17,17,0.22)" stroke-width="1.2"/>
-        <circle cx="40" cy="42" r="14" fill="url(#crater-grad)" stroke="rgba(17,17,17,0.10)" stroke-width="0.8" stroke-dasharray="3 2"/>
-        <circle cx="58" cy="55" r="10" fill="url(#crater-grad)" stroke="rgba(17,17,17,0.08)" stroke-width="0.7" stroke-dasharray="2 2"/>
-        <circle cx="36" cy="62" r="7" fill="url(#crater-grad)" stroke="rgba(17,17,17,0.08)" stroke-width="0.7"/>
-        <circle cx="62" cy="36" r="6" stroke="rgba(17,17,17,0.08)" stroke-width="0.6" fill="none"/>
-        <circle cx="50" cy="50" r="46.5" fill="none" stroke="rgba(17,17,17,0.12)" stroke-width="0.75" stroke-dasharray="4 6"/>
+      <svg class="moon-svg" viewBox="0 0 120 120">
+        <!-- Paper Disc Backing -->
+        <circle cx="60" cy="60" r="46" fill="#fdfbf7" fill-opacity="0.92"/>
+
+        <!-- Primary Hand-Drawn Circumference Arc (펜촉을 둥글게 굴린 스케치 윤곽선) -->
+        <path d="M 60 14 C 85 13, 106 34, 107 60 C 108 85, 86 107, 60 107 C 35 107, 13 86, 13 60 C 13 35, 34 14, 59 14" fill="none" stroke="#111111" stroke-width="1.45" stroke-linecap="round" stroke-linejoin="round"/>
+        
+        <!-- Secondary Overlapping Contour with Overshoot (손맛 펜선 겹침) -->
+        <path d="M 56 12 C 82 11, 108 32, 109 62 C 109 88, 88 109, 58 109 C 32 108, 11 87, 11 58 C 11 32, 32 12, 63 12" fill="none" stroke="#111111" stroke-width="1.0" stroke-linecap="round" opacity="0.55"/>
+        <path d="M 54 10 L 68 14" stroke="#111111" stroke-width="1.1" stroke-linecap="round" opacity="0.60"/>
+
+        <!-- Lunar Mare (달의 바다 - 굽이치는 펜선 윤곽) -->
+        <path d="M 32 40 C 44 36, 56 42, 62 52 C 68 62, 63 74, 52 80 C 42 86, 32 80, 26 70 C 20 60, 22 45, 32 40 Z" fill="none" stroke="#111111" stroke-width="1.1" stroke-linecap="round" opacity="0.50"/>
+        
+        <!-- Curved Internal Cross-Hatching (구부러진 빗금 펜선 음영) -->
+        <path d="
+          M 28 48 C 36 46, 44 50, 48 56
+          M 30 56 C 38 54, 46 58, 52 64
+          M 32 64 C 40 64, 48 68, 54 74
+          M 36 72 C 44 72, 50 76, 56 80
+          M 40 44 C 46 42, 54 46, 58 52
+          M 42 52 C 48 50, 56 54, 60 62
+          M 44 60 C 50 60, 58 64, 62 70
+        " fill="none" stroke="#111111" stroke-width="0.85" stroke-linecap="round" opacity="0.42"/>
+
+        <!-- Second Crater Group with Delicate Curved Loops -->
+        <path d="M 72 46 C 82 44, 90 50, 92 60 C 93 68, 86 78, 77 76 C 68 74, 66 64, 70 54 C 71 50, 72 46, 72 46 Z" fill="none" stroke="#111111" stroke-width="1.0" stroke-linecap="round" opacity="0.45"/>
+        <path d="
+          M 74 54 C 80 52, 85 56, 88 62
+          M 75 62 C 81 60, 86 64, 88 70
+          M 76 70 C 80 68, 84 72, 86 74
+        " fill="none" stroke="#111111" stroke-width="0.8" stroke-linecap="round" opacity="0.38"/>
+
+        <!-- Orbital Curved Wisp (달 주위를 유려하게 휘감아 도는 궤도 펜선) -->
+        <path d="M 8 74 C 16 98, 46 118, 82 116 C 108 114, 122 88, 116 60 C 110 34, 82 10, 48 10 C 26 10, 12 24, 6 44" fill="none" stroke="#111111" stroke-width="0.95" stroke-linecap="round" stroke-dasharray="10 6 20 8" opacity="0.45"/>
+        <path d="M 14 36 C 24 20, 46 12, 70 14 C 94 16, 112 36, 114 62" fill="none" stroke="#111111" stroke-width="0.75" stroke-linecap="round" stroke-dasharray="5 7" opacity="0.30"/>
       </svg>
     </div>
   </div>
@@ -672,6 +723,6 @@
 
   <script src="https://player.vimeo.com/api/player.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.18/dist/lenis.min.js"></script>
-  <script type="module" src="./main.js?v=3.6"></script>
+  <script type="module" src="./main.js?v=3.7"></script>
 </body>
 </html>

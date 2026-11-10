@@ -411,21 +411,21 @@ function handleScroll() {
     isPastOrInSec03 = (sec03Top < viewportHeight * 0.85);
   }
 
-  // 5. Sky Clouds & Moon triggers (6번 탭 지나면 구름, 8번 탭 지나면 달)
+  // 5. Sky Clouds & Moon triggers (5번 탭 지나면 구름, 7번 탭 지나면 달)
   if (cachedSecMids.length > 0) {
-    const sec06 = cachedSecMids.find(s => s.id === 'sec-06');
-    const sec08 = cachedSecMids.find(s => s.id === 'sec-08');
+    const sec05 = cachedSecMids.find(s => s.id === 'sec-05');
+    const sec07 = cachedSecMids.find(s => s.id === 'sec-07');
 
-    // 6번 탭(sec-06: West — 무비릴스 같은 창)을 지났을 때: sec-06 하단이 뷰포트 상단부로 올라갔을 때 구름 등장
-    if (sec06 && elSkyClouds) {
-      const isPastSec06 = (sec06.bottomDoc - scrollY) <= (viewportHeight * 0.70);
-      elSkyClouds.classList.toggle('is-active', isPastSec06);
+    // 5번 탭(sec-05: West — 조강과 서해 노을)을 지날 때: sec-05 하단이 뷰포트 상단부로 올라갔을 때 펜 드로잉 구름 등장
+    if (sec05 && elSkyClouds) {
+      const isPastSec05 = (sec05.bottomDoc - scrollY) <= (viewportHeight * 0.70);
+      elSkyClouds.classList.toggle('is-active', isPastSec05);
     }
 
-    // 8번 탭(sec-08: South — 〈디파처스 DEPARTURES〉)을 지났을 때: sec-08 하단이 뷰포트 상단부로 올라갔을 때 달 등장
-    if (sec08 && elSkyMoon) {
-      const isPastSec08 = (sec08.bottomDoc - scrollY) <= (viewportHeight * 0.70);
-      elSkyMoon.classList.toggle('is-active', isPastSec08);
+    // 7번 탭(sec-07: South — 참나무 6형제 숲)을 지날 때: sec-07 하단이 뷰포트 상단부로 올라갔을 때 펜 드로잉 달 등장
+    if (sec07 && elSkyMoon) {
+      const isPastSec07 = (sec07.bottomDoc - scrollY) <= (viewportHeight * 0.70);
+      elSkyMoon.classList.toggle('is-active', isPastSec07);
     }
   }
 
