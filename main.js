@@ -139,8 +139,8 @@ let cachedSec03DocHeight = 0;
 let lastActiveTypoIdx = -1;
 
 function initFocusItems() {
-  // Wrap lines inside story paragraphs & hero tagline with .focus-line
-  const storyParagraphs = document.querySelectorAll('.story-text, .hero-tagline');
+  // Wrap lines inside story paragraphs with .focus-line (hero-tagline은 항상 순백색 유지)
+  const storyParagraphs = document.querySelectorAll('.story-text');
   storyParagraphs.forEach(p => {
     if (p.querySelector('.focus-line')) return;
     const html = p.innerHTML;
