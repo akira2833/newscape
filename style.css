@@ -873,26 +873,21 @@ body.is-loading {
 /* 1. 이미지 및 블록 요소 대기 상태 */
 .focus-item {
   opacity: 0.22;
-  filter: blur(2.5px);
-  transform: translateY(28px);
+  transform: translateY(18px);
   transition:
-    opacity 0.75s var(--ease-out),
-    filter 0.75s var(--ease-out),
-    transform 0.75s var(--ease-out);
-  will-change: opacity, filter, transform;
+    opacity 0.65s var(--ease-out),
+    transform 0.65s var(--ease-out);
 }
 
 /* 2. 이미지 및 블록 요소 포커스 상태 */
 .focus-item.is-focused {
   opacity: 1.0;
-  filter: blur(0px);
   transform: translateY(0);
 }
 
 /* 3. 이미지 및 블록 요소 통과 상태 */
 .focus-item.is-passed {
   opacity: 0.75;
-  filter: blur(0px);
   transform: translateY(0);
 }
 
@@ -917,22 +912,18 @@ body.is-loading {
   display: block;
   margin-bottom: 0.35em;
   opacity: 0.20;
-  filter: blur(2.5px);
-  transform: translateY(22px);
+  transform: translateY(12px);
   color: rgba(215, 222, 232, 0.24);
   transition:
-    opacity 0.65s var(--ease-out),
-    filter 0.65s var(--ease-out),
-    transform 0.65s var(--ease-out),
-    color 0.55s var(--ease-out),
-    text-shadow 0.55s var(--ease-out);
-  will-change: opacity, filter, transform, color;
+    opacity 0.5s var(--ease-out),
+    transform 0.5s var(--ease-out),
+    color 0.45s var(--ease-out),
+    text-shadow 0.45s var(--ease-out);
 }
 
 /* 스크롤해서 올라와 포커스된 줄: 100% 순백색으로 채워짐 */
 .focus-line.is-focused {
   opacity: 1.0;
-  filter: blur(0px);
   transform: translateY(0);
   color: #ffffff !important;
   text-shadow: 0 1px 8px rgba(0, 0, 0, 0.35);
@@ -941,7 +932,6 @@ body.is-loading {
 /* 스크롤을 지나쳐 위로 올라간 줄: 차분하고 깨끗한 화이트톤 유지 */
 .focus-line.is-passed {
   opacity: 0.75;
-  filter: blur(0px);
   transform: translateY(0);
   color: rgba(255, 255, 255, 0.85);
   text-shadow: none;
@@ -959,32 +949,26 @@ body.is-loading {
   margin: 0 auto 5rem;
   max-width: 720px;
   cursor: pointer;
-  perspective: 1200px;
-  will-change: transform, opacity, filter;
   transition:
-    opacity 0.9s var(--ease-out),
-    filter 0.9s var(--ease-out),
-    transform 0.9s var(--ease-out);
+    opacity 0.75s var(--ease-out),
+    transform 0.75s var(--ease-out);
 }
 
 /* 대기 상태: 부드러운 안개 속 대기 (너무 강하게 튀지 않음) */
 .story-figure:not(.is-focused) {
   opacity: 0.32;
-  filter: blur(3px) brightness(0.72) saturate(0.85);
-  transform: translateY(24px) scale(0.98);
+  transform: translateY(18px);
 }
 
 /* 포커스 상태: 선명하고 온화하게 시네마틱 톤으로 전환 */
 .story-figure.is-focused {
   opacity: 1.0;
-  filter: blur(0px) brightness(1.0) saturate(1.02);
-  transform: translateY(0) scale(1.0);
+  transform: translateY(0);
 }
 
 .story-figure.is-passed {
-  opacity: 0.78;
-  filter: blur(0px) brightness(0.95);
-  transform: translateY(0) scale(1.0);
+  opacity: 0.80;
+  transform: translateY(0);
 }
 
 .image-wrap {
@@ -995,8 +979,7 @@ body.is-loading {
   border: none;
   overflow: visible;
   box-shadow: 0 12px 32px -8px rgba(0, 0, 0, 0.35);
-  transition: transform 0.4s var(--ease-out), box-shadow 0.4s var(--ease-out);
-  transform-style: preserve-3d;
+  transition: box-shadow 0.4s var(--ease-out);
 }
 
 /* Inner frame treatment */
@@ -1080,11 +1063,10 @@ body.is-loading {
   width: 100%;
   height: auto;
   display: block;
-  transition: transform 0.7s var(--ease-out);
 }
 
 .story-figure:hover img {
-  transform: scale(1.02);
+  transform: none;
 }
 
 figcaption {
@@ -1428,5 +1410,25 @@ figcaption {
   }
   .typo-compass-mark {
     display: none;
+  }
+
+  /* Mobile Safari Optimization: Disable CPU feDisplacementMap filter for 60-120fps */
+  .quill-pen-frame,
+  .story-figure.is-focused .quill-pen-frame,
+  .story-figure:hover .quill-pen-frame,
+  .dialog-media-box .quill-pen-frame {
+    filter: none !important;
+  }
+
+  /* Snappier transitions on mobile */
+  .focus-line,
+  .focus-item,
+  .story-figure {
+    transition-duration: 0.35s !important;
+  }
+
+  /* Prevent Safari overflow bounce stutter */
+  body {
+    -webkit-overflow-scrolling: touch;
   }
 }

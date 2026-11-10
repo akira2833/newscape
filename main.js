@@ -129,6 +129,15 @@ const jumpButtons = document.querySelectorAll('.jump-btn');
 const sections = Array.from(document.querySelectorAll('.story-section'));
 let focusItems = [];
 
+// Performance Cache to eliminate Layout Thrashing (Reflow) on Scroll
+let cachedFocusItems = [];
+let cachedSecMids = [];
+let cachedSecRects = [];
+let cachedItemCenters = [];
+let cachedSec03DocTop = 0;
+let cachedSec03DocHeight = 0;
+let lastActiveTypoIdx = -1;
+
 function initFocusItems() {
   // Wrap lines inside story paragraphs & hero tagline with .focus-line
   const storyParagraphs = document.querySelectorAll('.story-text, .hero-tagline');
@@ -151,6 +160,49 @@ function initFocusItems() {
 }
 
 initFocusItems();
+
+// Cache layout positions in document coordinates to prevent getBoundingClientRect in scroll loop
+function measureLayoutPositions() {
+  const scrollY = window.scrollY || window.pageYOffset;
+  const viewportHeight = window.innerHeight;
+
+  // 1. Sections cache
+  cachedSecMids = sections.map(sec => {
+    const rect = sec.getBoundingClientRect();
+    return {
+      id: sec.id,
+      midDoc: rect.top + scrollY + rect.height * 0.5,
+      topDoc: rect.top + scrollY,
+      bottomDoc: rect.bottom + scrollY
+    };
+  });
+
+  // 2. Typo stream item centers cache
+  cachedItemCenters = Array.from(typoItems).map(item => {
+    return item.offsetTop + item.offsetHeight * 0.5;
+  });
+
+  // 3. Focus items cache
+  cachedFocusItems = focusItems.map(item => {
+    const rect = item.getBoundingClientRect();
+    const isLine = item.classList.contains('focus-line');
+    const tolerance = isLine ? 55 : (viewportHeight * 0.28);
+    return {
+      element: item,
+      docCenter: rect.top + scrollY + rect.height * 0.5,
+      tolerance: tolerance,
+      currentState: ''
+    };
+  });
+
+  // 4. Section 03 cache
+  const sec03 = document.getElementById('sec-03');
+  if (sec03) {
+    const r = sec03.getBoundingClientRect();
+    cachedSec03DocTop = r.top + scrollY;
+    cachedSec03DocHeight = r.height;
+  }
+}
 
 const photoDialog = document.getElementById('photo-dialog');
 const dialogPhotoImg = document.getElementById('dialog-photo-img');
@@ -188,6 +240,7 @@ function updateMiddleTypography(sectionId) {
 
 // ============================================================================
 // 4. SCROLL & LINE-BY-LINE FOCUSING ENGINE ("한단락이 아닌 한줄씩 포커싱")
+//    - Zero Reflow / Zero Layout Thrashing (사파리 60fps/120fps 최적화)
 // ============================================================================
 function handleScroll() {
   const scrollY = window.scrollY || window.pageYOffset;
@@ -201,27 +254,19 @@ function handleScroll() {
     trackerFill.style.height = `${(scrollRatio * 100).toFixed(1)}%`;
   }
 
-  // 2. Continuous Vertical Typography Stream (본문 섹션 위치와 1:1 완벽 정밀 동기화)
-  if (typoStreamList && sections.length > 0 && typoItems.length > 0) {
+  // 2. Continuous Vertical Typography Stream (캐시된 좌표로 즉각 보간)
+  if (typoStreamList && cachedSecMids.length > 0 && cachedItemCenters.length > 0) {
     const focalCenterY = viewportHeight * 0.48;
 
-    // 각 본문 섹션의 뷰포트 중심 Y 좌표
-    const secMids = [];
-    for (let i = 0; i < sections.length; i++) {
-      const rect = sections[i].getBoundingClientRect();
-      secMids.push(rect.top + rect.height * 0.5);
-    }
+    // 각 본문 섹션의 현재 뷰포트 내 중심 Y 좌표
+    const secMids = cachedSecMids.map(s => s.midDoc - scrollY);
 
-    // focalCenterY가 가리키는 본문 섹션 진행도 fractionalIndex (0.0 ~ 10.0)
     let fractionalIndex = 0;
     if (focalCenterY <= secMids[0]) {
-      // 페이지 최상단(Hero Section): 0번 인덱스에 정확히 고정되어 중앙에 일치
       fractionalIndex = 0;
     } else if (focalCenterY >= secMids[secMids.length - 1]) {
-      // 페이지 최하단(Info Section)
       fractionalIndex = secMids.length - 1;
     } else {
-      // 중간 섹션들 사이의 부드러운 연속 선형 보간
       for (let i = 0; i < secMids.length - 1; i++) {
         if (focalCenterY >= secMids[i] && focalCenterY <= secMids[i + 1]) {
           const span = secMids[i + 1] - secMids[i];
@@ -232,104 +277,99 @@ function handleScroll() {
       }
     }
 
-    // 각 typo-item의 리스트 내 중심 Y 위치
-    const itemCenters = [];
-    for (let i = 0; i < typoItems.length; i++) {
-      itemCenters.push(typoItems[i].offsetTop + typoItems[i].offsetHeight * 0.5);
-    }
-
     const baseIndex = Math.floor(fractionalIndex);
-    const nextIndex = Math.min(baseIndex + 1, itemCenters.length - 1);
+    const nextIndex = Math.min(baseIndex + 1, cachedItemCenters.length - 1);
     const alpha = fractionalIndex - baseIndex;
-    const targetItemCenter = itemCenters[baseIndex] * (1 - alpha) + itemCenters[nextIndex] * alpha;
+    const targetItemCenter = cachedItemCenters[baseIndex] * (1 - alpha) + cachedItemCenters[nextIndex] * alpha;
 
-    // 뷰포트 화면 중앙(focalCenterY)에 정확히 해당 단어가 오도록 translateY 적용 (시작 시 중앙 정렬)
     const currentTranslateY = focalCenterY - targetItemCenter;
     typoStreamList.style.transform = `translateY(${currentTranslateY.toFixed(1)}px)`;
 
-    // 현재 본문 섹션에 해당하는 단어 하이라이트 활성화
     const activeIdx = Math.round(fractionalIndex);
-    typoItems.forEach((item, idx) => {
-      if (idx === activeIdx) {
-        item.classList.add('is-active');
-      } else {
-        item.classList.remove('is-active');
-      }
-    });
-
-    // 세로 영문 텍스트 오른쪽 10px 라인 위치 실시간 동기화
-    updateTypoStreamLine();
+    if (activeIdx !== lastActiveTypoIdx) {
+      lastActiveTypoIdx = activeIdx;
+      typoItems.forEach((item, idx) => {
+        if (idx === activeIdx) {
+          item.classList.add('is-active');
+        } else {
+          item.classList.remove('is-active');
+        }
+      });
+      updateTypoStreamLine();
+    }
   }
 
-  // 3. Focal Line Calculation (approx 44% down the screen, prime reading altitude)
+  // 3. Focal Line Calculation (Zero DOM Read: 캐시된 docCenter - scrollY 연산)
   const focalLine = viewportHeight * 0.44;
-
-  // Determine focused items
   let closestItem = null;
   let minDistance = Infinity;
 
-  focusItems.forEach(item => {
-    const rect = item.getBoundingClientRect();
-    const itemCenter = rect.top + rect.height * 0.5;
+  for (let i = 0; i < cachedFocusItems.length; i++) {
+    const item = cachedFocusItems[i];
+    const itemCenter = item.docCenter - scrollY;
     const distToFocalLine = Math.abs(itemCenter - focalLine);
 
-    const isLine = item.classList.contains('focus-line');
-    // Tight tolerance for individual lines so they focus line-by-line!
-    const tolerance = isLine ? 50 : (viewportHeight * 0.28);
-    const isIntersecting = rect.top <= (focalLine + tolerance * 0.75) && rect.bottom >= (focalLine - tolerance * 0.75);
+    let nextState = 'none';
+    if (distToFocalLine < item.tolerance) {
+      nextState = 'focused';
+    } else if (itemCenter < focalLine - item.tolerance) {
+      nextState = 'passed';
+    }
 
-    if (isIntersecting || distToFocalLine < tolerance) {
-      item.classList.add('is-focused');
-      item.classList.remove('is-passed');
-    } else if (itemCenter < focalLine - tolerance) {
-      // Scrolled past above (이미 위로 지나간 구간)
-      item.classList.remove('is-focused');
-      item.classList.add('is-passed');
-    } else {
-      // Upcoming below (스크롤 되기 전: 옅은 색 상태)
-      item.classList.remove('is-focused');
-      item.classList.remove('is-passed');
+    // 상태가 실제로 바뀔 때만 DOM 클래스 조작 (불필요한 스타일 무효화 방지)
+    if (item.currentState !== nextState) {
+      item.currentState = nextState;
+      if (nextState === 'focused') {
+        item.element.classList.add('is-focused');
+        item.element.classList.remove('is-passed');
+      } else if (nextState === 'passed') {
+        item.element.classList.remove('is-focused');
+        item.element.classList.add('is-passed');
+      } else {
+        item.element.classList.remove('is-focused');
+        item.element.classList.remove('is-passed');
+      }
     }
 
     if (distToFocalLine < minDistance) {
       minDistance = distToFocalLine;
       closestItem = item;
     }
-  });
-
-  // Guarantee at least the closest line/item is focused
-  if (closestItem && !closestItem.classList.contains('is-focused')) {
-    closestItem.classList.add('is-focused');
-    closestItem.classList.remove('is-passed');
   }
 
-  // 4. Determine Active Section
+  // Guarantee at least the closest line/item is focused
+  if (closestItem && closestItem.currentState !== 'focused') {
+    closestItem.currentState = 'focused';
+    closestItem.element.classList.add('is-focused');
+    closestItem.element.classList.remove('is-passed');
+  }
+
+  // 4. Determine Active Section (캐시 활용)
   let activeSecId = currentActiveSectionId;
   const midScreen = viewportHeight * 0.5;
 
-  for (let i = 0; i < sections.length; i++) {
-    const sec = sections[i];
-    const rect = sec.getBoundingClientRect();
-    if (rect.top <= midScreen && rect.bottom >= midScreen) {
+  for (let i = 0; i < cachedSecMids.length; i++) {
+    const sec = cachedSecMids[i];
+    const top = sec.topDoc - scrollY;
+    const bottom = sec.bottomDoc - scrollY;
+    if (top <= midScreen && bottom >= midScreen) {
       activeSecId = sec.id;
       break;
-    } else if (rect.top > midScreen && i === 0) {
+    } else if (top > midScreen && i === 0) {
       activeSecId = sec.id;
       break;
-    } else if (i === sections.length - 1 && rect.bottom < midScreen) {
+    } else if (i === cachedSecMids.length - 1 && bottom < midScreen) {
       activeSecId = sec.id;
     }
   }
 
   updateMiddleTypography(activeSecId);
 
-  // 3번 영역(03 / EAST — 노거수 미루나무) 도달 감지 -> 나뭇잎 & 나뭇가지 낙하 효과 활성화
-  const sec03 = document.getElementById('sec-03');
-  if (sec03) {
-    const sec03Rect = sec03.getBoundingClientRect();
-    isSec03InView = (sec03Rect.top < viewportHeight * 0.85) && (sec03Rect.bottom > viewportHeight * 0.12);
-    // 3번 영역 도달 및 이후 섹션(04~10) 스크롤 진행 중인지 감지 (바닥에 잎과 가지가 머무르도록)
-    isPastOrInSec03 = (sec03Rect.top < viewportHeight * 0.85);
+  // 3번 영역(03 / EAST — 노거수 미루나무) 도달 감지
+  if (cachedSec03DocHeight > 0) {
+    const sec03Top = cachedSec03DocTop - scrollY;
+    isSec03InView = (sec03Top < viewportHeight * 0.85) && ((sec03Top + cachedSec03DocHeight) > viewportHeight * 0.12);
+    isPastOrInSec03 = (sec03Top < viewportHeight * 0.85);
   }
 
   isTicking = false;
@@ -343,26 +383,32 @@ function requestTick() {
 }
 
 window.addEventListener('scroll', requestTick, { passive: true });
-window.addEventListener('resize', requestTick, { passive: true });
+window.addEventListener('resize', () => {
+  measureLayoutPositions();
+  requestTick();
+}, { passive: true });
 
 // ============================================================================
-// LENIS SMOOTH SCROLL (스크롤 속도 감속 & 시네마틱 부드러운 스크롤)
+// LENIS SMOOTH SCROLL (데스크톱 마우스 휠 전용 감속, 모바일 터치는 네이티브 120Hz 유지)
 // ============================================================================
 let lenis = null;
-if (typeof window.Lenis !== 'undefined') {
+const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0 || window.innerWidth < 768;
+
+if (typeof window.Lenis !== 'undefined' && !isTouchDevice) {
   lenis = new window.Lenis({
-    duration: 1.8, // 감쇠 지속 시간: 1.8초 (느리고 우아한 감쇠)
+    duration: 1.8,
     easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
     orientation: 'vertical',
     gestureOrientation: 'vertical',
     smoothWheel: true,
-    wheelMultiplier: 0.72, // 휠 스크롤 속도를 28% 늦춰 차분하게 감상 유도
-    touchMultiplier: 1.0,
+    wheelMultiplier: 0.72,
+    syncTouch: false,
+    touchMultiplier: 0,
     infinite: false
   });
 
   function raf(time) {
-    lenis.raf(time);
+    if (lenis) lenis.raf(time);
     requestAnimationFrame(raf);
   }
   requestAnimationFrame(raf);
@@ -642,32 +688,8 @@ if (btnSoundToggle) {
 }
 
 // ============================================================================
-// 8. INTERACTIVE GALLERY FIGURE 3D TILT EFFECT ("이미지 인터랙션 & 틸트 심도")
+// 8. IMAGE PRESENTATION (평면 갤러리 모드 - 3D 틸트 제거하여 안정적 감상 유도)
 // ============================================================================
-function initFigureInteractiveEffects() {
-  const figures = document.querySelectorAll('.story-figure');
-
-  figures.forEach(fig => {
-    const wrap = fig.querySelector('.image-wrap');
-    if (!wrap) return;
-
-    fig.addEventListener('mousemove', (e) => {
-      const rect = wrap.getBoundingClientRect();
-      const x = (e.clientX - rect.left) / rect.width;
-      const y = (e.clientY - rect.top) / rect.height;
-
-      // Soft, subtle 3D optical tilt (max ±5.5 degrees)
-      const rotX = (0.5 - y) * 6;
-      const rotY = (x - 0.5) * 6;
-
-      wrap.style.transform = `perspective(1000px) rotateX(${rotX.toFixed(2)}deg) rotateY(${rotY.toFixed(2)}deg) scale3d(1.015, 1.015, 1.015)`;
-    });
-
-    fig.addEventListener('mouseleave', () => {
-      wrap.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)';
-    });
-  });
-}
 
 // ============================================================================
 // 8-1. QUILL SCRATCH PEN IMAGE FRAMES (새와 잎, 가지와 동일한 순수 펜 드로잉 테두리)
@@ -881,13 +903,15 @@ function initQuillBirdCompanion() {
   const canvas = document.getElementById('quill-bird-canvas');
   if (!canvas) return;
 
+  const isMobile = window.innerWidth < 768 || ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
+
   const renderer = new THREE.WebGLRenderer({
     canvas,
     alpha: true,
-    antialias: true,
+    antialias: !isMobile,
     powerPreference: 'high-performance'
   });
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+  renderer.setPixelRatio(isMobile ? Math.min(window.devicePixelRatio || 1, 1.15) : Math.min(window.devicePixelRatio || 1, 2));
   renderer.setSize(window.innerWidth, window.innerHeight);
 
   const camera = new THREE.PerspectiveCamera(35, window.innerWidth / window.innerHeight, 0.1, 100);
@@ -1391,6 +1415,8 @@ function initQuillBirdCompanion() {
   let lastBoilStep = -1;
 
   function updateLineBoil(timeSec) {
+    if (isMobile) return; // 모바일 GPU/CPU 자원 절약을 위해 모바일에서는 정적 벡터 라인 유지
+
     const boilStep = Math.floor(timeSec * 10);
     if (boilStep === lastBoilStep) return;
     lastBoilStep = boilStep;
@@ -1724,6 +1750,8 @@ function initVideoLoadingScreen() {
       if (loader && loader.parentNode) {
         loader.parentNode.removeChild(loader);
       }
+      measureLayoutPositions();
+      handleScroll();
     }, 1200);
   }
 
@@ -1743,18 +1771,24 @@ function initVideoLoadingScreen() {
 document.addEventListener('DOMContentLoaded', () => {
   window.scrollTo(0, 0);
   initVideoLoadingScreen();
+  measureLayoutPositions();
   handleScroll();
   updateTypoStreamLine();
-  initFigureInteractiveEffects();
   initFigureQuillFrames();
   initQuillBirdCompanion();
 });
 
+// Refresh cached layouts once all images and resources finish loading
+window.addEventListener('load', () => {
+  measureLayoutPositions();
+  handleScroll();
+});
+
 // Run once immediately
 initVideoLoadingScreen();
+measureLayoutPositions();
 handleScroll();
 updateTypoStreamLine();
-initFigureInteractiveEffects();
 initFigureQuillFrames();
 initQuillBirdCompanion();
 
