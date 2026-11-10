@@ -691,6 +691,13 @@ body.is-loading {
   overflow: visible;
 }
 
+.cloud-cluster-svg path,
+.moon-svg path,
+.moon-svg circle,
+.moon-svg ellipse {
+  fill: none !important;
+}
+
 /* 1-A. 대형 3D 뭉게구름 덩어리 (좌상단 메인 볼륨) */
 .cloud-cluster.cluster-lg-1 {
   top: clamp(8px, 2vh, 25px);
@@ -811,17 +818,7 @@ body.is-loading {
 }
 
 .moon-halo {
-  position: absolute;
-  inset: -28%;
-  border-radius: 50%;
-  background: radial-gradient(
-    circle,
-    rgba(255, 252, 238, 0.75) 0%,
-    rgba(245, 238, 220, 0.32) 42%,
-    rgba(235, 228, 210, 0) 72%
-  );
-  filter: blur(16px);
-  animation: moon-halo-pulse 7s ease-in-out infinite alternate;
+  display: none !important;
 }
 
 @keyframes moon-halo-pulse {
