@@ -1003,7 +1003,7 @@ function initQuillBirdCompanion() {
       const basePositions = new Float32Array(geometry.attributes.position.array);
 
       const material = new THREE.LineBasicMaterial({
-        color: 0xffffff,
+        color: 0x111111,
         transparent: true,
         opacity: tpl.opacity,
         blending: THREE.NormalBlending
@@ -1334,7 +1334,7 @@ function initQuillBirdCompanion() {
     const basePositions = new Float32Array(geometry.attributes.position.array);
 
     const material = new THREE.LineBasicMaterial({
-      color: 0xffffff,
+      color: 0x111111,
       transparent: true,
       opacity: 0,
       blending: THREE.NormalBlending
@@ -1839,8 +1839,8 @@ function initVideoLoadingScreen() {
     lenis.stop();
   }
 
-  // 건축 도면 스케치 & 로고 결합 감상 후 시네마틱 디졸브 (1.5s~1.85s 자연스러운 펜 드로잉 호흡에 맞춰 3950ms 설정)
-  const FIXED_LOADING_TIME = 3950;
+  // 건축 도면 스케치 & 로고 결합 감상 후 시네마틱 디졸브 (박스/로고 1.5배 가속 결합에 맞춰 3350ms 설정)
+  const FIXED_LOADING_TIME = 3350;
   timerId = setTimeout(dismissLoader, FIXED_LOADING_TIME);
 }
 
