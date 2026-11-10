@@ -570,15 +570,16 @@ body.is-loading {
   letter-spacing: -0.009em;
   line-height: 0.82;
   text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.22);
+  color: rgba(17, 17, 17, 0.12);
   -webkit-text-stroke: 0 !important;
   white-space: nowrap;
-  transition: color 0.5s var(--ease-out), text-shadow 0.5s var(--ease-out);
+  transition: color 0.5s var(--ease-out);
+  text-shadow: none !important;
 }
 
 .typo-item.is-active .typo-item-text {
-  color: rgba(255, 255, 255, 0.44);
-  text-shadow: 0 0 28px rgba(255, 255, 255, 0.22);
+  color: rgba(17, 17, 17, 0.35);
+  text-shadow: none !important;
 }
 
 .typo-item-sub {
@@ -587,9 +588,10 @@ body.is-loading {
   font-weight: 400;
   letter-spacing: 0.26em;
   text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.26);
+  color: rgba(17, 17, 17, 0.25);
   white-space: nowrap;
   margin-top: 4px;
+  text-shadow: none !important;
 }
 
 /* Monumental Chapter Number Watermark (00 -> 10) */
@@ -601,7 +603,7 @@ body.is-loading {
   font-size: clamp(6rem, 16vw, 18rem);
   font-weight: 900;
   line-height: 0.8;
-  color: rgba(255, 255, 255, 0.035);
+  color: rgba(17, 17, 17, 0.04);
   -webkit-text-stroke: 0 !important;
   transition: opacity 0.5s ease;
 }
@@ -668,16 +670,16 @@ body.is-loading {
   font-size: 14.5px;
   font-weight: 700;
   letter-spacing: 0.18em;
-  color: #ffffff;
+  color: #111111;
   text-decoration: none;
   opacity: 0.90;
-  transition: opacity 0.2s ease, text-shadow 0.2s ease;
-  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.45);
+  transition: opacity 0.2s ease;
+  text-shadow: none !important;
 }
 
 .brand-link:hover {
   opacity: 1;
-  text-shadow: 0 0 12px rgba(255, 255, 255, 0.6);
+  text-shadow: none !important;
 }
 
 .header-right {
@@ -690,11 +692,11 @@ body.is-loading {
 a.btn-hud-link,
 .btn-hud-link {
   appearance: none;
-  border: 1px solid rgba(255, 255, 255, 0.28) !important;
-  background: rgba(255, 255, 255, 0.08) !important;
+  border: 1px solid rgba(17, 17, 17, 0.22) !important;
+  background: rgba(255, 255, 255, 0.50) !important;
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
-  color: #ffffff !important;
+  color: #111111 !important;
   padding: 7px 14px;
   font-family: var(--font-mono);
   font-size: 11.5px;
@@ -703,27 +705,29 @@ a.btn-hud-link,
   cursor: pointer;
   transition: all 0.2s var(--ease-out);
   white-space: nowrap;
+  text-shadow: none !important;
 }
 
 a.btn-hud-link:visited,
 .btn-hud-link:visited {
-  color: #ffffff !important;
+  color: #111111 !important;
 }
 
 a.btn-hud-link:hover,
 .btn-hud-link:hover {
-  border-color: rgba(255, 255, 255, 0.6) !important;
-  background: rgba(255, 255, 255, 0.16) !important;
-  color: #ffffff !important;
+  border-color: rgba(17, 17, 17, 0.70) !important;
+  background: rgba(17, 17, 17, 0.08) !important;
+  color: #000000 !important;
 }
 
 a.btn-hud-book,
 .btn-hud-book {
-  border-color: rgba(255, 255, 255, 0.65) !important;
-  background: rgba(255, 255, 255, 0.16) !important;
+  border-color: #111111 !important;
+  background: #111111 !important;
   font-weight: 500;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.10);
   color: #ffffff !important;
+  text-shadow: none !important;
 }
 
 a.btn-hud-book:visited,
@@ -733,18 +737,18 @@ a.btn-hud-book:visited,
 
 a.btn-hud-book:hover,
 .btn-hud-book:hover {
-  background: #ffffff !important;
-  color: #000000 !important;
-  border-color: #ffffff !important;
+  background: #333333 !important;
+  color: #ffffff !important;
+  border-color: #333333 !important;
 }
 
 .btn-hud {
   appearance: none;
-  border: 1px solid rgba(255, 255, 255, 0.25);
-  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(17, 17, 17, 0.22);
+  background: rgba(255, 255, 255, 0.50);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
-  color: #ffffff;
+  color: #111111;
   padding: 7px 14px;
   font-family: var(--font-mono);
   font-size: 11.5px;
@@ -754,12 +758,13 @@ a.btn-hud-book:hover,
   gap: 6px;
   cursor: pointer;
   transition: all 0.2s var(--ease-out);
+  text-shadow: none !important;
 }
 
 .btn-hud:hover, .btn-hud.active {
-  background: #ffffff;
-  color: #000000;
-  border-color: #ffffff;
+  background: #111111;
+  color: #ffffff;
+  border-color: #111111;
 }
 
 /* Sound Vector Icon (순백/모노크롬 미니멀 벡터 아이콘 - 빨간색 이모지 제거) */
@@ -893,7 +898,7 @@ a.btn-hud-book:hover,
 .tracker-bar {
   width: 2px;
   height: 120px;
-  background: rgba(255, 255, 255, 0.15);
+  background: rgba(17, 17, 17, 0.15);
   position: relative;
   overflow: hidden;
 }
@@ -904,7 +909,7 @@ a.btn-hud-book:hover,
   left: 0;
   width: 100%;
   height: 0%;
-  background: #ffffff;
+  background: #111111;
   transition: height 0.15s ease-out;
 }
 
@@ -912,7 +917,7 @@ a.btn-hud-book:hover,
   font-family: var(--font-mono);
   font-size: 11px;
   letter-spacing: 0.08em;
-  color: rgba(255, 255, 255, 0.65);
+  color: rgba(17, 17, 17, 0.65);
   writing-mode: vertical-rl;
   text-orientation: mixed;
 }
@@ -938,9 +943,11 @@ a.btn-hud-book:hover,
   font-family: var(--font-mono);
   font-size: 12px;
   letter-spacing: 0.18em;
-  color: rgba(255, 255, 255, 0.45);
+  color: #111111;
+  opacity: 0.60;
   margin-bottom: 2.2rem;
   text-transform: uppercase;
+  text-shadow: none !important;
 }
 
 /* ============================================================================
@@ -980,48 +987,45 @@ a.btn-hud-book:hover,
   opacity: 1 !important;
   filter: none !important;
   transform: none !important;
-  text-shadow: none !important; /* CRITICAL: Prevent parent shadow from exposing un-focused child lines */
+  color: #111111;
+  text-shadow: none !important; /* 그림자 완전 제거 */
 }
 
 /* ============================================================================
-   LINE-BY-LINE FOCUSING ("한단락이 아닌 한줄씩 포커싱되게 해줘")
+   LINE-BY-LINE FOCUSING ("스크롤 전 50% 투명도 -> 스크롤되면 투명도 0 포커싱")
    ============================================================================ */
 .focus-line {
   display: block;
   margin-bottom: 0.35em;
-  opacity: 0.20;
-  transform: translateY(10px);
-  color: rgba(245, 245, 248, 0.30);
-  text-shadow: none;
+  opacity: 0.50; /* 스크롤 되기 전: 50% 투명도 */
+  transform: translateY(8px);
+  color: #111111;
+  text-shadow: none !important; /* 그림자 제거 */
   transition:
     opacity 0.45s var(--ease-out),
-    transform 0.45s var(--ease-out),
-    color 0.45s var(--ease-out),
-    text-shadow 0.45s var(--ease-out);
+    transform 0.45s var(--ease-out);
 }
 
-/* 스크롤해서 올라와 포커스된 줄: 100% 순백색 + 또렷한 입체 그림자로 시선 집중 */
+/* 스크롤해서 올라와 포커스된 줄: 투명도 0 (100% 완전 불투명 선명한 블랙 포커싱) */
 .focus-line.is-focused {
   opacity: 1.0;
   transform: translateY(0);
-  color: #ffffff !important;
-  text-shadow:
-    0 2px 12px rgba(0, 0, 0, 0.60),
-    0 1px 3px rgba(0, 0, 0, 0.65);
+  color: #111111 !important;
+  text-shadow: none !important;
 }
 
-/* 스크롤을 지나쳐 위로 올라간 줄: 차분하게 반투명 페이드 (읽은 줄 표시) */
+/* 스크롤을 지나쳐 위로 올라간 줄: 차분하게 50% 투명도로 복귀 */
 .focus-line.is-passed {
-  opacity: 0.45;
+  opacity: 0.50;
   transform: translateY(0);
-  color: rgba(255, 255, 255, 0.65);
-  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.35);
+  color: #111111;
+  text-shadow: none !important;
 }
 
 .story-text .highlight {
   color: inherit;
-  font-weight: 500;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.4);
+  font-weight: 600;
+  border-bottom: 1px solid rgba(17, 17, 17, 0.45);
   padding-bottom: 2px;
 }
 
@@ -1154,17 +1158,18 @@ figcaption {
   font-family: var(--font-serif-en);
   font-size: 12px;
   letter-spacing: 0.05em;
-  color: rgba(255, 255, 255, 0.55);
+  color: rgba(17, 17, 17, 0.55);
   margin-top: 12px;
   padding-left: 4px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   transition: color 0.3s ease;
+  text-shadow: none !important;
 }
 
 .story-figure:hover figcaption {
-  color: rgba(255, 255, 255, 0.85);
+  color: #111111;
 }
 
 /* 00. Hero Section */
@@ -1200,9 +1205,11 @@ figcaption {
   font-family: var(--font-mono);
   font-size: 11px;
   letter-spacing: 0.22em;
-  color: rgba(255, 255, 255, 0.48);
+  color: #111111;
+  opacity: 0.60;
   margin-bottom: 1.6rem;
   text-transform: uppercase;
+  text-shadow: none !important;
 }
 
 .hero-tagline {
@@ -1211,12 +1218,12 @@ figcaption {
   font-size: clamp(1.8rem, 4.2vw, 3.1rem);
   line-height: 1.38;
   letter-spacing: 0.025em;
-  color: #ffffff !important;
+  color: #111111 !important;
   opacity: 1 !important;
   filter: none !important;
   transform: none !important;
   margin: 0 0 2.4rem;
-  text-shadow: 0 2px 14px rgba(0, 0, 0, 0.45), 0 1px 3px rgba(0, 0, 0, 0.60);
+  text-shadow: none !important; /* 영문 타이틀 그림자 제거 */
 }
 
 .hero-quick-links {
@@ -1231,11 +1238,11 @@ figcaption {
 a.hero-quick-btn,
 .hero-quick-btn {
   appearance: none;
-  border: 1px solid rgba(255, 255, 255, 0.35) !important;
-  background: rgba(255, 255, 255, 0.08) !important;
+  border: 1px solid rgba(17, 17, 17, 0.22) !important;
+  background: rgba(255, 255, 255, 0.50) !important;
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
-  color: #ffffff !important;
+  color: #111111 !important;
   padding: 9px 20px;
   font-family: var(--font-serif);
   font-size: 13px;
@@ -1245,27 +1252,29 @@ a.hero-quick-btn,
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+  text-shadow: none !important;
 }
 
 a.hero-quick-btn:visited,
 .hero-quick-btn:visited {
-  color: #ffffff !important;
+  color: #111111 !important;
 }
 
 a.hero-quick-btn:hover,
 .hero-quick-btn:hover {
-  background: rgba(255, 255, 255, 0.20) !important;
-  border-color: rgba(255, 255, 255, 0.75) !important;
-  color: #ffffff !important;
+  background: rgba(17, 17, 17, 0.08) !important;
+  border-color: rgba(17, 17, 17, 0.65) !important;
+  color: #000000 !important;
 }
 
 a.hero-quick-btn.accent,
 .hero-quick-btn.accent {
-  background: rgba(255, 255, 255, 0.18) !important;
-  border-color: rgba(255, 255, 255, 0.75) !important;
+  background: #111111 !important;
+  border-color: #111111 !important;
   color: #ffffff !important;
   font-weight: 500;
+  text-shadow: none !important;
 }
 
 a.hero-quick-btn.accent:visited,
@@ -1275,9 +1284,9 @@ a.hero-quick-btn.accent:visited,
 
 a.hero-quick-btn.accent:hover,
 .hero-quick-btn.accent:hover {
-  background: #ffffff !important;
-  color: #000000 !important;
-  border-color: #ffffff !important;
+  background: #333333 !important;
+  color: #ffffff !important;
+  border-color: #333333 !important;
 }
 
 .scroll-prompt {
@@ -1285,13 +1294,13 @@ a.hero-quick-btn.accent:hover,
   flex-direction: column;
   align-items: center;
   gap: 12px;
-  color: rgba(255, 255, 255, 0.65);
+  color: rgba(17, 17, 17, 0.65);
 }
 
 .prompt-line {
   width: 1px;
   height: 36px;
-  background: linear-gradient(to bottom, rgba(255, 255, 255, 0.75), transparent);
+  background: linear-gradient(to bottom, rgba(17, 17, 17, 0.75), transparent);
   animation: prompt-line-flow 2s infinite ease-in-out;
 }
 
@@ -1315,8 +1324,8 @@ a.hero-quick-btn.accent:hover,
   font-weight: 500;
   letter-spacing: 0.26em;
   text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.72);
-  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.3);
+  color: rgba(17, 17, 17, 0.72);
+  text-shadow: none !important;
 }
 
 @keyframes prompt-bounce {
@@ -1329,19 +1338,16 @@ a.hero-quick-btn.accent:hover,
   font-size: clamp(1.4rem, 3vw, 2.1rem);
   line-height: 1.8;
   font-weight: 500;
-  color: #ffffff;
-  text-shadow:
-    0 2px 12px rgba(0, 0, 0, 0.60),
-    0 1px 3px rgba(0, 0, 0, 0.55);
+  color: #111111;
+  text-shadow: none !important;
 }
 
 .signature {
   font-family: var(--font-serif);
   font-size: 1.25rem;
-  color: rgba(255, 255, 255, 0.8);
+  color: #111111;
   margin-top: 2rem;
-  text-shadow:
-    0 1px 8px rgba(0, 0, 0, 0.55);
+  text-shadow: none !important;
 }
 
 /* ============================================================================
@@ -1610,9 +1616,10 @@ a.hero-quick-btn.accent:hover,
 
   .hero-tagline {
     font-size: clamp(1.5rem, 5.8vw, 2.1rem);
-    color: #ffffff !important;
+    color: #111111 !important;
     opacity: 1 !important;
     margin-bottom: 2.2rem;
+    text-shadow: none !important;
   }
 
   .hero-quick-links {
@@ -1624,16 +1631,24 @@ a.hero-quick-btn.accent:hover,
   .hero-quick-btn {
     padding: 8px 16px;
     font-size: 11.5px;
-    color: #ffffff !important;
+    color: #111111 !important;
     text-decoration: none !important;
-    border: 1px solid rgba(255, 255, 255, 0.4) !important;
-    background: rgba(255, 255, 255, 0.12) !important;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+    border: 1px solid rgba(17, 17, 17, 0.25) !important;
+    background: rgba(255, 255, 255, 0.55) !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+    text-shadow: none !important;
   }
 
   a.hero-quick-btn:visited,
   .hero-quick-btn:visited {
+    color: #111111 !important;
+  }
+
+  a.hero-quick-btn.accent,
+  .hero-quick-btn.accent {
+    background: #111111 !important;
     color: #ffffff !important;
+    border-color: #111111 !important;
   }
 
   /* Mobile Safari Optimization: Disable CPU feDisplacementMap filter for 60-120fps */
